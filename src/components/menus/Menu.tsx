@@ -1,4 +1,4 @@
-import { IMenu } from '@/models/IMenu'
+import { IMenu } from '@/models/models'
 import capitalizeFirstLetter from '@/utils/capitalizeFirstLetter'
 import {
   Button,

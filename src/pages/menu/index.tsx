@@ -1,9 +1,8 @@
 import Menus from '@/components/menus/Menus'
-import { IMenu } from '@/models/IMenu'
+import { IMenu } from '@/models/models'
 import { fetchMenus } from '@/services/publicApi'
-import { Box } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { GetServerSideProps } from 'next'
-import useSWR from 'swr'
 
 interface MenuProps {
   menus: IMenu[]
@@ -15,7 +14,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   return { props: { menus } }
 }
 
-const Menu = ({ menus }: MenuProps) => {
+const MenuPage = ({ menus }: MenuProps) => {
   // const Menu = () => {
   // const { data: menus, error } = useSWR('/api/menus', fetchMenus)
   // if (error) return <div>failed to load</div>
@@ -24,9 +23,18 @@ const Menu = ({ menus }: MenuProps) => {
   // console.log(menus)
   return (
     <Box>
+      <Typography
+        variant="h2"
+        textAlign="center"
+        sx={{
+          my: 2,
+        }}
+      >
+        Menus
+      </Typography>
       <Menus menus={menus}></Menus>
     </Box>
   )
 }
 
-export default Menu
+export default MenuPage

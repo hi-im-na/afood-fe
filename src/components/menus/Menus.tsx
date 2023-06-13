@@ -1,4 +1,4 @@
-import { IMenu } from '@/models/IMenu'
+import { IMenu } from '@/models/models'
 import { Box, Paper } from '@mui/material'
 import Menu from './Menu'
 
@@ -16,7 +16,9 @@ export default function Menus({ menus }: MenuProps) {
         }}
       >
         {menus.map((menu) => (
-          <Paper key={menu.id}>
+          <Paper key={menu.id} sx={{
+            mr: 1,
+          }}>
             <Menu menu={menu} />
           </Paper>
         ))}

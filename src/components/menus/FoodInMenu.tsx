@@ -1,4 +1,4 @@
-import { IFood } from '@/models/IFood'
+import { IFood } from '@/models/models'
 import capitalizeFirstLetter from '@/utils/capitalizeFirstLetter'
 import {
   Button,

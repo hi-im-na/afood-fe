@@ -1,4 +1,4 @@
-import { IFood } from '@/models/IFood'
+import { IFood } from '@/models/models'
 import FoodInMenu from './FoodInMenu'
 import { Box, Paper } from '@mui/material'
 
@@ -16,7 +16,9 @@ export default function FoodsInMenu({ foodsInMenu }: FoodsInMenuProps) {
         }}
       >
         {foodsInMenu.map((food) => (
-          <Paper key={food.id}>
+          <Paper key={food.id} sx={{
+            mr: 1,
+          }}>
             <FoodInMenu foodInMenu={food} />
           </Paper>
         ))}

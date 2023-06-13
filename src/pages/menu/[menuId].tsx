@@ -1,11 +1,8 @@
 import FoodsInMenu from '@/components/menus/FoodsInMenu'
-import { IFood } from '@/models/IFood'
-import { IMenu } from '@/models/IMenu'
+import { IFood } from '@/models/models'
 import { fetchFoodsByMenuId, fetchMenus } from '@/services/publicApi'
-import { GetStaticPaths, GetStaticProps } from 'next'
-import { useRouter } from 'next/router'
+import { GetStaticProps } from 'next'
 import { ParsedUrlQuery } from 'querystring'
-import useSWR from 'swr'
 
 interface MenuInfoProps {
   foodsInMenu: IFood[]
@@ -35,5 +32,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
 }
 
 export default function MenuInfo({ foodsInMenu }: MenuInfoProps) {
-  return <FoodsInMenu foodsInMenu={foodsInMenu} />
+  return (
+    <>
+      <FoodsInMenu foodsInMenu={foodsInMenu} />
+    </>
+  )
 }
