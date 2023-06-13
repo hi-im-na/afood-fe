@@ -35,7 +35,7 @@ export default function Layout({ children }: Props) {
             {children}
           </Box>
         </Box>
-        <Footer />
+        {/* <Footer /> */}
       </DrawerProvider>
     </>
   )
