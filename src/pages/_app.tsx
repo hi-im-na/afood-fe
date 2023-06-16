@@ -1,5 +1,5 @@
 import Layout from '@/components/layout/layout'
-import { AuthProvider, ProtectedRoute } from '@/context/auth'
+import AuthProvider from '@/context/AuthProvider'
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 

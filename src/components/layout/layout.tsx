@@ -1,10 +1,8 @@
 import { DrawerProvider } from '@/context/DrawerContext'
-import { Box, Container, CssBaseline, Toolbar } from '@mui/material'
-import { ReactNode } from 'react'
-import Header from '../layout/Header'
-import Footer from './Footer'
-import Sidebar from './Sidebar'
 import { Props } from '@/utils/interfaces'
+import { Box, CssBaseline, Toolbar } from '@mui/material'
+import Header from '../layout/Header'
+import Sidebar from './Sidebar'
 
 export default function Layout({ children }: Props) {
   return (
@@ -21,10 +19,7 @@ export default function Layout({ children }: Props) {
           <Box
             component="main"
             sx={{
-              backgroundColor: (theme) =>
-                theme.palette.mode === 'light'
-                  ? theme.palette.grey[100]
-                  : theme.palette.grey[900],
+              background: 'linear-gradient(to bottom, #ffffff, #eaf2f0)', // Gradient from white to light gray
               flexGrow: 1,
               height: '100vh',
               overflow: 'auto',
@@ -35,7 +30,6 @@ export default function Layout({ children }: Props) {
             {children}
           </Box>
         </Box>
-        {/* <Footer /> */}
       </DrawerProvider>
     </>
   )

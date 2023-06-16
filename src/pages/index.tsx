@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
+import { Box, Button, Container, Typography } from '@mui/material'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -13,6 +14,42 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <Box
+        sx={{
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Container maxWidth="sm">
+          <Typography
+            variant="h2"
+            align="center"
+            sx={{ marginBottom: 4, color: '#ff5722' }}
+          >
+            Welcome to AFood Restaurant!
+          </Typography>
+          <Typography variant="h5" align="center" sx={{ marginBottom: 2 }}>
+            Experience a delightful culinary journey.
+          </Typography>
+          <Typography variant="body1" align="center" sx={{ marginBottom: 4 }}>
+            Indulge in our carefully crafted dishes made from fresh, locally
+            sourced ingredients.
+          </Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              href="/menu"
+            >
+              View Menu
+            </Button>
+          </Box>
+        </Container>
+      </Box>
     </>
   )
 }

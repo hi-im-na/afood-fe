@@ -1,8 +1,18 @@
 import { useDrawer } from '@/context/DrawerContext'
+import { AccountCircle } from '@mui/icons-material'
 import MenuIcon from '@mui/icons-material/Menu'
-import { IconButton, Toolbar, Typography } from '@mui/material'
+import {
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Typography
+} from '@mui/material'
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
 import { styled } from '@mui/material/styles'
+import { signIn, signOut, useSession } from 'next-auth/react'
+import { useState } from 'react'
 
 const drawerWidth: number = 240
 
@@ -11,7 +21,7 @@ interface AppBarProps extends MuiAppBarProps {
 }
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({ theme, open: open }) => ({
+})<AppBarProps>(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
@@ -25,10 +35,25 @@ const AppBar = styled(MuiAppBar, {
       duration: theme.transitions.duration.enteringScreen,
     }),
   }),
+  background: 'linear-gradient(to right, #aad7a0, #82cda3)', // Gradient from light green to fresh green
+  color: '#ffffff', // White color
 }))
 
 export default function Header() {
   const { isOpen, toggleDrawer } = useDrawer()
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  const { data: session } = useSession()
+  console.log({ session })
 
   return (
     <>
@@ -59,6 +84,46 @@ export default function Header() {
           >
             Afood
           </Typography>
+          {session?.user ? (
+            <div>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <AccountCircle />
+              <Typography component="span" sx={{ px: 1 }} >
+                {session.user.username}
+              </Typography>
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={() => signOut()}>Sign out</MenuItem>
+              </Menu>
+            </div>
+          ) : (
+            <>
+              <Button variant="text" color="inherit" onClick={() => signIn()}>
+                Sign in
+              </Button>
+            </>
+          )}
         </Toolbar>
       </AppBar>
     </>

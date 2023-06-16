@@ -19,6 +19,7 @@ const Drawer = styled(MuiDrawer, {
       duration: theme.transitions.duration.enteringScreen,
     }),
     boxSizing: 'border-box',
+    background: 'linear-gradient(to bottom, #f5f5f5, #e0e0e0)', // Gradient from light gray to slightly darker gray
     ...(!open && {
       overflowX: 'hidden',
       transition: theme.transitions.create('width', {
@@ -54,8 +55,6 @@ export default function Sidebar() {
         <Divider />
         <List component="nav">
           {mainListItems}
-          <Divider sx={{ my: 1 }} />
-          {secondaryListItems}
         </List>
       </Drawer>
     </>
