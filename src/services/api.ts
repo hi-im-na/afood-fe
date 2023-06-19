@@ -1,10 +1,10 @@
 import Axios from 'axios'
 
 export const API_BASE_URL = 'http://localhost:8080'
-export const API_URL = 'http://localhost:8080/api'
-export const API_URL_PUBLIC = 'http://localhost:8080/api/public'
-export const API_URL_ADMIN = 'http://localhost:8080/api/admin'
-export const API_URL_MANAGER = 'http://localhost:8080/api/manager'
+export const API_URL = `${API_BASE_URL}/api`
+export const API_URL_PUBLIC = `${API_URL}/public`
+export const API_URL_ADMIN = `${API_URL}/admin`
+export const API_URL_MANAGER = `${API_URL}/manager`
 
 const api = Axios.create({
   baseURL: API_BASE_URL,
