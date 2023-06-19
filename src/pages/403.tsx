@@ -6,13 +6,15 @@ export default function Custom404() {
       <Box
         sx={{
           display: 'flex',
+          flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
           height: '100vh',
         }}
       >
-        <Typography variant="h1" color={'red'}>
-          404 - Page Not Found
+        <Typography variant="h1" color={"red"}>403 - Forbidden</Typography>
+        <Typography variant="h4">
+          You don't have permission to access this page.
         </Typography>
       </Box>
     </>
