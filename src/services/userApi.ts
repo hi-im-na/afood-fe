@@ -30,5 +30,5 @@ export const fetchSelf = async (token: string): Promise<IStaff> => {
       console.log(err)
       return err
     })
-  return res.data 
+  return res.data
 }

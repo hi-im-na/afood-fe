@@ -23,7 +23,7 @@ export default function Layout({ children }: Props) {
               flexGrow: 1,
               height: '100vh',
               overflow: 'auto',
-              pl: 2,
+              p: 2,
             }}
           >
             <Toolbar />

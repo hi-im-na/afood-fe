@@ -7,7 +7,7 @@ import {
   Menu,
   MenuItem,
   Toolbar,
-  Typography
+  Typography,
 } from '@mui/material'
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
 import { styled } from '@mui/material/styles'
@@ -95,9 +95,9 @@ export default function Header() {
                 color="inherit"
               >
                 <AccountCircle />
-              <Typography component="span" sx={{ px: 1 }} >
-                {session.user.username}
-              </Typography>
+                <Typography component="span" sx={{ px: 1 }}>
+                  {session.user.username}
+                </Typography>
               </IconButton>
               <Menu
                 id="menu-appbar"
@@ -114,7 +114,9 @@ export default function Header() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={() => signOut()}>Sign out</MenuItem>
+                <MenuItem onClick={() => signOut({ callbackUrl: '/' })}>
+                  Sign out
+                </MenuItem>
               </Menu>
             </div>
           ) : (

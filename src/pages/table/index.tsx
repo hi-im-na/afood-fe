@@ -16,10 +16,10 @@ export const getServerSideProps: GetServerSideProps = async () => {
 };
 
 export default function TablePage({ tableAreas }: TablePageProps) {
-  const { data: tables, error } = useSWR('fetchTables', fetchTables);
+  const { data: tables, error } = useSWR('fetchTables',() => fetchTables());
 
-  if (error) return <div>Failed to load tables</div>;
   if (!tables) return <div>Loading tables...</div>;
+  if (error) return <div>Failed to load tables</div>;
 
   return (
     <Box p={4}>
