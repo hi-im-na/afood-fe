@@ -45,6 +45,13 @@ export interface IOrder {
   orderStatus: string
 }
 
+export interface IOrderFood {
+  id: number
+  orderId: number
+  foodId: number
+  quantity: number
+}
+
 export interface IStaff {
   id: number
   username: string
