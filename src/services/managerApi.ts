@@ -73,12 +73,13 @@ export const addFoodToOrder = async (
 export const addOrder = async (
   staffId: string,
   tableSittingId: string,
+  totalCost: string,
   token: string
 ) => {
   const res = await axios
     .post<IOrder>(
       `${API_URL_MANAGER}/orders/addorder`,
-      new URLSearchParams({ tableSittingId, staffId }),
+      new URLSearchParams({ tableSittingId, staffId, totalCost }),
       { headers: { Authorization: `Bearer ${token}` } }
     )
     .catch((err) => {
@@ -101,7 +102,10 @@ export const fetchFoodsByOrderId = async (orderId: string, token: string) => {
   return res.data as IFood[]
 }
 
-export const fetchOrderFoodByOrderId = async (orderId: string, token: string) => {
+export const fetchOrderFoodByOrderId = async (
+  orderId: string,
+  token: string
+) => {
   const res = await axios
     .get<IOrderFood[]>(
       `${API_URL_MANAGER}/orderfood/findbyorderid?orderId=${orderId}`,

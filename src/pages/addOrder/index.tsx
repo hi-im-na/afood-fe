@@ -203,6 +203,7 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
       let newOrder: IOrder = await addOrder(
         staffId,
         tableId,
+        totalOrderPrice.toString(),
         session!.user.token
       )
 
@@ -241,6 +242,7 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
     setSuccessSnackbarOpen(false)
     setErrorSnackbarOpen(false)
   }
+  
   return (
     <>
       <Box display="flex">

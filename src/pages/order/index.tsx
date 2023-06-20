@@ -56,6 +56,7 @@ export default function OrderPage() {
     { field: 'orderOutTime', headerName: 'Out Time', width: 200 },
     { field: 'tableSittingId', headerName: 'Table', width: 50 },
     { field: 'staffId', headerName: 'Staff Id', width: 70 },
+    { field: 'totalCost', headerName: 'Total Cost', width: 100},
     { field: 'orderStatus', headerName: 'orderStatus', width: 150 },
   ]
 
