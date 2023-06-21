@@ -18,29 +18,40 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Home" />
     </ListItemButton>
+
     <ListItemButton href='/menu'>
       <ListItemIcon>
         <ShoppingCartIcon />
       </ListItemIcon>
       <ListItemText primary="Menus" />
     </ListItemButton>
+
     <ListItemButton href='/table'>
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>
       <ListItemText primary="Tables" />
     </ListItemButton>
+
     <ListItemButton href="/order">
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
       <ListItemText primary="Orders" />
     </ListItemButton>
+
     <ListItemButton href='/addOrder'>
       <ListItemIcon>
         <LayersIcon />
       </ListItemIcon>
       <ListItemText primary="Add order" />
+    </ListItemButton>
+
+    <ListItemButton href='/income'>
+      <ListItemIcon>
+        <LayersIcon />
+      </ListItemIcon>
+      <ListItemText primary="Income" />
     </ListItemButton>
   </React.Fragment>
 );

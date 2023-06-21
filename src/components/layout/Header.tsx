@@ -1,133 +1,148 @@
-import { useDrawer } from '@/context/DrawerContext'
-import { AccountCircle } from '@mui/icons-material'
-import MenuIcon from '@mui/icons-material/Menu'
-import {
-  Button,
-  IconButton,
-  Menu,
-  MenuItem,
-  Toolbar,
-  Typography,
-} from '@mui/material'
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
-import { styled } from '@mui/material/styles'
+import ThemeToggleButton from '@/components/ThemeToggleButton/ThemeToggleButton'
+import { AccountCircle, ExitToApp, Restaurant } from '@mui/icons-material'
+import { useMediaQuery } from '@mui/material'
+import AppBar from '@mui/material/AppBar'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Container from '@mui/material/Container'
+import IconButton from '@mui/material/IconButton'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
+import Toolbar from '@mui/material/Toolbar'
+import Tooltip from '@mui/material/Tooltip'
+import Typography from '@mui/material/Typography'
 import { signIn, signOut, useSession } from 'next-auth/react'
-import { useState } from 'react'
+import * as React from 'react'
 
-const drawerWidth: number = 240
-
-interface AppBarProps extends MuiAppBarProps {
-  open?: boolean
+export type HeaderProps = {
+  ColorModeContext: React.Context<{ toggleColorMode: () => void }>
 }
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({ theme, open }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(['width', 'margin'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-  background: 'linear-gradient(to right, #aad7a0, #82cda3)', // Gradient from light green to fresh green
-  color: '#ffffff', // White color
-}))
 
-export default function Header() {
-  const { isOpen, toggleDrawer } = useDrawer()
+const drawerWidth = 240
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-
-  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
-
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
-
+const Header = (props: HeaderProps) => {
+  const { ColorModeContext } = props
   const { data: session } = useSession()
-  // console.log({ session })
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  )
+
+  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElNav(event.currentTarget)
+  }
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget)
+  }
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null)
+  }
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null)
+  }
+
+  const tabletCheck = useMediaQuery('(min-width: 768px)')
+  const mobileCheck = useMediaQuery('(min-width: 600px)')
 
   return (
     <>
-      <AppBar position="absolute" open={isOpen}>
-        <Toolbar
-          sx={{
-            pr: '24px', // keep right padding when drawer closed
-          }}
-        >
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={toggleDrawer}
-            sx={{
-              marginRight: '36px',
-              ...(isOpen && { display: 'none' }),
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            component="h1"
-            variant="h6"
-            color="inherit"
-            noWrap
-            sx={{ flexGrow: 1 }}
-          >
-            Afood
-          </Typography>
-          {session?.user ? (
-            <div>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-              >
-                <AccountCircle />
-                <Typography component="span" sx={{ px: 1 }}>
-                  {session.user.username}
-                </Typography>
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={() => signOut({ callbackUrl: '/' })}>
-                  Sign out
-                </MenuItem>
-              </Menu>
-            </div>
-          ) : (
-            <>
-              <Button variant="text" color="inherit" onClick={() => signIn()}>
+      <AppBar position="fixed" sx={{ marginBottom: '40px' }}>
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
+            <Restaurant sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+            <Typography
+              variant="h6"
+              noWrap
+              component="a"
+              href="/"
+              sx={{
+                mr: 2,
+                display: { xs: 'none', md: 'flex' },
+                fontFamily: 'monospace',
+                fontWeight: 700,
+                letterSpacing: '.3rem',
+                color: 'inherit',
+                textDecoration: 'none',
+              }}
+            >
+              AFood
+            </Typography>
+            <Restaurant sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+            <Typography
+              variant="h5"
+              noWrap
+              component="a"
+              href=""
+              sx={{
+                mr: 2,
+                display: { xs: 'flex', md: 'none' },
+                flexGrow: 1,
+                fontFamily: 'monospace',
+                fontWeight: 700,
+                letterSpacing: '.3rem',
+                color: 'inherit',
+                textDecoration: 'none',
+              }}
+            >
+              AFood
+            </Typography>
+            <Box sx={{ paddingRight: 5, marginLeft: 'auto' }}>
+              {tabletCheck}
+              <ThemeToggleButton ColorModeContext={ColorModeContext} />
+            </Box>
+            {!session ? (
+              <Button variant="contained" color="info" onClick={() => signIn()}>
                 Sign in
               </Button>
-            </>
-          )}
-        </Toolbar>
+            ) : (
+              <Box sx={{ flexGrow: 0 }}>
+                <Tooltip title="Open profile settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <AccountCircle fontSize="large" />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: '45px' }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  <MenuItem
+                    onClick={() =>
+                      session ? signOut({ callbackUrl: '/' }) : signIn()
+                    }
+                  >
+                    {/* <Typography textAlign="center"> */}
+                    <ExitToApp />
+                    {session ? 'Logout' : 'Login'}
+                    {/* </Typography> */}
+                  </MenuItem>
+                </Menu>
+                <Typography component="span">
+                  {session?.user?.username}
+                </Typography>
+              </Box>
+            )}
+          </Toolbar>
+        </Container>
       </AppBar>
+      <Box
+        position="static"
+        sx={{ height: mobileCheck ? 64 : 57, pb: '40px' }}
+      />
     </>
   )
 }
+export default Header

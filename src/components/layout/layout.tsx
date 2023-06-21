@@ -1,36 +1,20 @@
-import { DrawerProvider } from '@/context/DrawerContext'
 import { Props } from '@/utils/interfaces'
-import { Box, CssBaseline, Toolbar } from '@mui/material'
-import Header from '../layout/Header'
-import Sidebar from './Sidebar'
+import { useSession } from 'next-auth/react'
+import scss from './Layout.module.scss'
+import SideMenu from './SideMenu'
 
 export default function Layout({ children }: Props) {
+  const { data: session } = useSession()
   return (
     <>
-      <CssBaseline />
-      <DrawerProvider>
-        <Header />
-        <Box
-          sx={{
-            display: 'flex',
-          }}
-        >
-          <Sidebar />
-          <Box
-            component="main"
-            sx={{
-              background: 'linear-gradient(to bottom, #ffffff, #eaf2f0)', // Gradient from white to light gray
-              flexGrow: 1,
-              height: '100vh',
-              overflow: 'auto',
-              p: 2,
-            }}
-          >
-            <Toolbar />
-            {children}
-          </Box>
-        </Box>
-      </DrawerProvider>
+      <main
+        className={scss.layout}
+        style={{ padding: session ? '0 24px 0 80px' : 0 }}
+      >
+        {session && <SideMenu />}
+        {children}
+        {/* <Footer /> */}
+      </main>
     </>
   )
 }

@@ -1,7 +1,6 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
 import { Box, Button, Container, Typography } from '@mui/material'
+import { Inter } from 'next/font/google'
+import Head from 'next/head'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,7 +16,6 @@ export default function Home() {
 
       <Box
         sx={{
-          height: '100vh',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
@@ -27,7 +25,10 @@ export default function Home() {
           <Typography
             variant="h2"
             align="center"
-            sx={{ marginBottom: 4, color: '#ff5722' }}
+            sx={{
+              marginBottom: 4,
+              color: '#ff5722',
+            }}
           >
             Welcome to AFood Restaurant!
           </Typography>
