@@ -33,7 +33,7 @@ export default function TablePage({ tableAreas }: TablePageProps) {
         );
 
         return (
-          <Box key={tableArea.id} mb={4} boxShadow={2} p={3} bgcolor="white">
+          <Box key={tableArea.id} mb={4} boxShadow={2} p={3} >
             <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 2 }}>
               {tableArea.areaName}
             </Typography>

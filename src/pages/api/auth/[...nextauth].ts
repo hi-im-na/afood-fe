@@ -28,6 +28,7 @@ export default NextAuth({
 
   pages: {
     signIn: '/sign-in',
+    error: '/auth/error', // Error code passed in query string as ?error=
   },
   callbacks: {
     async jwt({ token, user }) {
