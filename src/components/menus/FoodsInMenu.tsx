@@ -1,6 +1,6 @@
 import { IFood } from '@/models/models'
+import { Box, Container, Typography } from '@mui/material'
 import FoodInMenu from './FoodInMenu'
-import { Box, Paper } from '@mui/material'
 
 interface FoodsInMenuProps {
   foodsInMenu: IFood[]
@@ -9,6 +9,11 @@ interface FoodsInMenuProps {
 export default function FoodsInMenu({ foodsInMenu }: FoodsInMenuProps) {
   return (
     <>
+      <Container>
+        <Typography variant="h2" component="div" gutterBottom textAlign={'center'} fontWeight={'bold'}>
+          Foods in menu
+        </Typography>
+      </Container>
       <Box
         sx={{
           display: 'flex',
@@ -16,11 +21,11 @@ export default function FoodsInMenu({ foodsInMenu }: FoodsInMenuProps) {
         }}
       >
         {foodsInMenu.map((food) => (
-          <Paper key={food.id} sx={{
-            mr: 1,
-          }}>
-            <FoodInMenu foodInMenu={food} />
-          </Paper>
+          // <Paper key={food.id} sx={{
+          //   mr: 1,
+          // }}>
+          <FoodInMenu foodInMenu={food} key={food.id} />
+          // </Paper>
         ))}
       </Box>
     </>
