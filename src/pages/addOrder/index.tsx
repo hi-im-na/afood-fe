@@ -44,8 +44,8 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
   const [foodsQuantity, setFoodsQuantity] = useState<FoodsQuantity>({})
   const [totalOrderPrice, setTotalOrderPrice] = useState(0)
   const [isSnackbarOpen, setSnackbarOpen] = useState(false)
-  const [isErrorSnackbarOpen, setErrorSnackbarOpen] = useState(false)
-  const [isSuccessSnackbarOpen, setSuccessSnackbarOpen] = useState(false)
+  const [snackbarColor, setSnackbarColor] = useState('')
+  
   //form data
   const [tableId, setTableId] = useState('')
   const [staffId, setStaffId] = useState('')
@@ -69,13 +69,14 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
       )
     }
   }, [foodsQuantity])
+
   useEffect(() => {
     console.log('addedFoods changed', addedFoods)
   }, [addedFoods])
 
-  useEffect(() => {}, [isErrorSnackbarOpen])
-  useEffect(() => {}, [isSuccessSnackbarOpen])
-
+  useEffect(() => {
+    if (isSnackbarOpen === false) setSnackbarColor('')
+  }, [isSnackbarOpen])
   // addOrder table definitions
   const rows: GridRowsProp = foods || []
 
@@ -222,11 +223,11 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
         }
       })
       setSnackbarOpen(true)
-      setSuccessSnackbarOpen(true)
+      setSnackbarColor('success')
     } catch (err) {
       console.log(err)
-      setSnackbarOpen(false)
-      setErrorSnackbarOpen(true)
+      setSnackbarOpen(true)
+      setSnackbarColor('error')
     }
   }
   const handleOnStaffIdChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -239,10 +240,8 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false)
-    setSuccessSnackbarOpen(false)
-    setErrorSnackbarOpen(false)
   }
-  
+
   return (
     <>
       <Box display="flex">
@@ -261,7 +260,6 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
         {addOrderTable}
         {addFoodToOrderTable}
       </Box>
-      {/* status div */}
       <Box display="flex" alignItems="center" sx={{ mt: 2 }}>
         <Box
           sx={{ width: '60%' }}
@@ -281,7 +279,6 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
             onChange={handleOnStaffIdChange}
           />
 
-          {/* TODO: TableId */}
           <InputLabel id="tableId" />
           <TextField
             sx={{ bgcolor: 'white' }}
@@ -313,20 +310,10 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
         onClose={handleSnackbarClose}
       >
         <Alert
-          severity={
-            isSuccessSnackbarOpen
-              ? 'success'
-              : isErrorSnackbarOpen
-              ? 'error'
-              : 'info'
-          }
+          severity={(snackbarColor ? snackbarColor : 'info') as any}
           sx={{ width: '100%' }}
         >
-          {isSuccessSnackbarOpen
-            ? 'success'
-            : isErrorSnackbarOpen
-            ? 'There is something wrong!. Check the log for more information'
-            : 'info'}
+          {(snackbarColor ? snackbarColor : 'info') as string}
         </Alert>
       </Snackbar>
     </>
