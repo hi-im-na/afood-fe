@@ -14,3 +14,12 @@ export type AuthContextType = {
   login?: () => void
   logout?: () => void
 }
+
+export type IColor =
+  | 'primary'
+  | 'secondary'
+  | 'error'
+  | 'warning'
+  | 'info'
+  | 'success'
+  | ''
