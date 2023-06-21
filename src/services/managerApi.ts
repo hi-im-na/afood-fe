@@ -83,8 +83,7 @@ export const addOrder = async (
       { headers: { Authorization: `Bearer ${token}` } }
     )
     .catch((err) => {
-      console.log(err)
-      return err
+      throw err
     })
   return res.data as IOrder
 }
