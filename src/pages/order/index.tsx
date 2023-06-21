@@ -5,12 +5,12 @@ import {
   fetchOrders,
   putOrderStatus,
 } from '@/services/managerApi'
-import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid'
-import { useSession } from 'next-auth/react'
-
+import formatDate from '@/utils/formatDate'
+import { Close, Done, Info, Restaurant } from '@mui/icons-material'
 import {
   Box,
   Button,
+  Chip,
   FormControl,
   InputLabel,
   MenuItem,
@@ -19,8 +19,36 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid'
+import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import useSWR, { mutate } from 'swr'
+
+const statusColor = (status: string) => {
+  switch (status) {
+    case 'SERVING':
+      return 'warning'
+    case 'PAID':
+      return 'success'
+    case 'CANCELLED':
+      return 'error'
+    default:
+      return 'primary'
+  }
+}
+
+const statusIcon = (status: string) => {
+  switch (status) {
+    case 'SERVING':
+      return <Restaurant />
+    case 'PAID':
+      return <Done />
+    case 'CANCELLED':
+      return <Close />
+    default:
+      return <Info />
+  }
+}
 
 export default function OrderPage() {
   const { data: session } = useSession()
@@ -48,7 +76,15 @@ export default function OrderPage() {
   )
 
   // table definition
-  const rows: GridRowsProp = orders || []
+  const rows: GridRowsProp =
+    orders?.map((order) => {
+      return {
+        ...order,
+        orderInTime: formatDate(order.orderInTime),
+        orderOutTime: formatDate(order.orderOutTime),
+        orderStatus: order.orderStatus,
+      }
+    }) || []
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'id', width: 100 },
@@ -56,8 +92,20 @@ export default function OrderPage() {
     { field: 'orderOutTime', headerName: 'Out Time', width: 200 },
     { field: 'tableSittingId', headerName: 'Table', width: 50 },
     { field: 'staffId', headerName: 'Staff Id', width: 70 },
-    { field: 'totalCost', headerName: 'Total Cost', width: 100},
-    { field: 'orderStatus', headerName: 'orderStatus', width: 150 },
+    { field: 'totalCost', headerName: 'Total Cost', width: 100 },
+    {
+      field: 'orderStatus',
+      headerName: 'orderStatus',
+      width: 150,
+      renderCell: (params) => (
+        <Chip
+          label={params.row.orderStatus}
+          icon={statusIcon(params.row.orderStatus)}
+          color={statusColor(params.row.orderStatus)}
+          variant="outlined"
+        />
+      ),
+    },
   ]
 
   const rows2: GridRowsProp = foodsInOrder || []
@@ -83,13 +131,11 @@ export default function OrderPage() {
       rows.find((row) => row.id === rowId)
     )
     const selectedRowIds = selectedRows.map((row: any) => row.id)
-    console.log('Selected Row IDs:', selectedRowIds)
   }
   const handleStatusChangeSubmit = async (event: any) => {
     event.preventDefault()
     selectedRowIds.forEach(async (id: any) => {
       let res = await putOrderStatus(id, statusSelection, session!.user.token)
-      console.log(res)
     })
     mutate('fetchOrders', () => fetchOrders(session!.user.token))
   }
@@ -100,7 +146,6 @@ export default function OrderPage() {
 
   async function handleConfirmOrderShow(e: any) {
     e.preventDefault()
-    console.log('show confirm order')
     // fetch order info
     let res = await fetchFoodsByOrderId(orderId, session!.user.token)
     let orderFoodRes = await fetchOrderFoodByOrderId(
@@ -114,8 +159,6 @@ export default function OrderPage() {
       )
       let orderFoodIds = orderFoodRes.map((orderFood) => orderFood.foodId)
 
-      console.log('orderFoodQuantities:', orderFoodQuantities)
-      // setFoodsQuantity({ []: orderFoodQuantities[] })
       const result: { [key: string]: number } = orderFoodIds.reduce(
         (acc, orderFoodId, index) => {
           acc[orderFoodId] = orderFoodQuantities[index]
@@ -123,7 +166,6 @@ export default function OrderPage() {
         },
         {} as { [key: string]: number }
       )
-      console.log(result)
       setFoodsQuantity(result)
     } else {
       setFoodsInOrder([])
@@ -229,15 +271,6 @@ export default function OrderPage() {
               },
             }}
           />
-          {/* {foodsInOrder.length > 0 ? (
-            foodsInOrder.map((food) => (
-              <>
-                <Box>{food.name}</Box>
-              </>
-            ))
-          ) : (
-            <>cs cai nit</>
-          )} */}
         </Box>
       </Box>
     </>
