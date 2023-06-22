@@ -2,13 +2,25 @@ import { Grid } from '@mui/material'
 import DataCard from '@/components/dashboard/DataCard/DataCard'
 import scss from './DataRibbon.module.scss'
 
-const DataRibbon = () => {
+interface DataRibbonProps {
+  countOrders: number
+  totalValue: number
+  avgOrderValue: number
+  conversionRate: number
+}
+
+const DataRibbon = ({
+  countOrders,
+  totalValue,
+  avgOrderValue,
+  conversionRate,
+}: DataRibbonProps) => {
   return (
     <Grid container gap={2} className={scss.dataRibbon}>
       <Grid>
         <DataCard
           title={'Total Sales'}
-          value={'462'}
+          value={countOrders.toString()}
           description={
             'The totals of all DataSoft products in the current financial year'
           }
@@ -17,14 +29,14 @@ const DataRibbon = () => {
       <Grid>
         <DataCard
           title={'Total Value'}
-          value={'$25,732.53'}
+          value={'$' + totalValue.toString()}
           description={'The total sales of the current financial year'}
         />
       </Grid>
       <Grid>
         <DataCard
           title={'Avg. Order Value'}
-          value={'$159.30'}
+          value={'$' + avgOrderValue.toString()}
           description={
             'The average order value for all sales this current financial year'
           }
@@ -33,7 +45,7 @@ const DataRibbon = () => {
       <Grid>
         <DataCard
           title={'Conversion rate'}
-          value={'0.61%'}
+          value={conversionRate.toString() + '%'}
           description={'How many pitches become sales'}
         />
       </Grid>

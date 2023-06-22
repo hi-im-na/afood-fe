@@ -116,3 +116,47 @@ export const fetchOrderFoodByOrderId = async (
     })
   return res.data as IOrderFood[]
 }
+
+export const getCountOrders = async (token: string) => {
+  const res = await axios
+    .get<number>(`${API_URL_MANAGER}/orders/countorders`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .catch((err) => {
+      throw err
+    })
+  return res.data
+}
+
+export const getTotalCostAllOrder = async (token: string) => {
+  const res = await axios
+    .get<number>(`${API_URL_MANAGER}/orders/totalCostAllOrder`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .catch((err) => {
+      throw err
+    })
+  return res.data
+}
+
+export const getAverageCostAllOrder = async (token: string) => {
+  const res = await axios
+    .get<number>(`${API_URL_MANAGER}/orders/averagecost`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .catch((err) => {
+      throw err
+    })
+  return res.data
+}
+
+export const getConversionRate = async (token: string) => {
+  const res = await axios
+    .get<number>(`${API_URL_MANAGER}/orders/conversionrate`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .catch((err) => {
+      throw err
+    })
+  return res.data
+}
