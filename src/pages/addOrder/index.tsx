@@ -83,7 +83,7 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'Id', width: 50 },
     { field: 'name', headerName: 'Name', width: 400 },
-    { field: 'cost', headerName: 'Cost ($)', width: 200 },
+    { field: 'cost', headerName: 'Cost ($)', width: 150 },
     {
       field: 'Add to order',
       headerName: 'Add to order',
@@ -125,6 +125,7 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
     {
       field: '-',
       headerName: '-',
+      width: 70,
       sortable: false,
       renderCell: (params) => {
         const onClick = (e: any) => {
@@ -143,6 +144,7 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
     {
       field: '+',
       headerName: '+',
+      width: 70,
       sortable: false,
       renderCell: (params) => {
         const onClick = (e: any) => {
@@ -168,7 +170,7 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
 
   addOrderTable = (
     <>
-      <Box sx={{ width: '60%', pr: 1 }}>
+      <Box sx={{ width: '55%', pr: 1 }}>
         <DataGrid
           sx={{ bgcolor: 'white' }}
           rows={rows}
@@ -182,7 +184,7 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
 
   addFoodToOrderTable = (
     <>
-      <Box sx={{ width: '40%', pl: 1 }}>
+      <Box sx={{ width: '45%', pl: 1 }}>
         <DataGrid
           sx={{ bgcolor: 'white' }}
           rows={addedFoods}
@@ -262,7 +264,7 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
       </Box>
       <Box display="flex" alignItems="center" sx={{ mt: 2 }}>
         <Box
-          sx={{ width: '60%' }}
+          sx={{ width: '55%' }}
           display="flex"
           justifyContent="space-around"
           alignItems="center"
@@ -272,7 +274,7 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
           </Typography>
           <InputLabel id="staffId" />
           <TextField
-            sx={{ bgcolor: 'white' }}
+            sx={{ bgcolor: 'white', width: '20%' }}
             label="staffId"
             id="staff-id"
             value={staffId}
@@ -281,7 +283,7 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
 
           <InputLabel id="tableId" />
           <TextField
-            sx={{ bgcolor: 'white' }}
+            sx={{ bgcolor: 'white', width: '20%' }}
             label="tableId"
             id="table-id"
             value={tableId}
@@ -296,7 +298,7 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
             Submit
           </Button>
         </Box>
-        <Box display="flex" justifyContent="flex-end" sx={{ width: '40%' }}>
+        <Box display="flex" justifyContent="flex-end" sx={{ width: '45%' }}>
           <Typography variant="h3">
             Total price: {totalOrderPrice}
             {'$'}

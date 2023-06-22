@@ -17,7 +17,7 @@ export default function Menus({ menus }: MenuProps) {
       >
         {menus.map((menu) => (
           <Paper key={menu.id} sx={{
-            mr: 1,
+            m: 1,
           }}>
             <Menu menu={menu} />
           </Paper>

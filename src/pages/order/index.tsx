@@ -87,9 +87,9 @@ export default function OrderPage() {
     }) || []
 
   const columns: GridColDef[] = [
-    { field: 'id', headerName: 'id', width: 100 },
-    { field: 'orderInTime', headerName: 'In Time', width: 200 },
-    { field: 'orderOutTime', headerName: 'Out Time', width: 200 },
+    { field: 'id', headerName: 'id', width: 80 },
+    { field: 'orderInTime', headerName: 'In Time', width: 130 },
+    { field: 'orderOutTime', headerName: 'Out Time', width: 130 },
     { field: 'tableSittingId', headerName: 'Table', width: 50 },
     { field: 'staffId', headerName: 'Staff Id', width: 70 },
     { field: 'totalCost', headerName: 'Total Cost', width: 100 },
@@ -212,19 +212,19 @@ export default function OrderPage() {
   return (
     <>
       <Box display="flex" sx={{ m: 2 }}>
-        <Box sx={{ width: '55%' }}>
+        <Box sx={{ width: '60%' , pl: 1}}>
           <Typography variant="h3" component="h1">
             Manage order table
           </Typography>
         </Box>
-        <Box sx={{ width: '45%' }} display="flex" alignItems="center">
+        <Box sx={{ width: '40%' , pr: 1}} display="flex" alignItems="center">
           <Typography variant="body1" component="h5">
             Choose the order you want to see:
           </Typography>
           <InputLabel id="orderId" />
           &nbsp;
           <TextField
-            sx={{ bgcolor: 'white' }}
+            sx={{ bgcolor: 'white', width: '20%' }}
             label="orderId"
             id="order-id"
             value={orderId}
@@ -242,7 +242,7 @@ export default function OrderPage() {
         </Box>
       </Box>
       <Box display="flex">
-        <Box sx={{ width: '55%', pr: 1 }}>
+        <Box sx={{ width: '60%', pr: 1 }}>
           <DataGrid
             sx={{ bgcolor: 'white' }}
             rows={rows}
@@ -255,11 +255,14 @@ export default function OrderPage() {
               sorting: {
                 sortModel: [{ field: 'id', sort: 'desc' }],
               },
+              pagination: {
+                // paginationModel: { page: 0, pageSize: 10 },
+              },
             }}
           />
           {ordersTable}
         </Box>
-        <Box sx={{ width: '45%', pl: 1 }}>
+        <Box sx={{ width: '40%', pl: 1 }}>
           <DataGrid
             sx={{ bgcolor: 'white' }}
             rows={foodsInOrder}
