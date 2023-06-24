@@ -1,7 +1,6 @@
 'use client'
 import { IFood } from '@/models/models'
 import capitalizeFirstLetter from '@/utils/capitalizeFirstLetter'
-import Image from 'mui-image'
 import {
   Box,
   Button,
@@ -10,12 +9,15 @@ import {
   CardContent,
   Typography,
 } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import Image from 'mui-image'
 
 interface FoodInMenuProps {
   foodInMenu: IFood
 }
 
 export default function FoodInMenu({ foodInMenu }: FoodInMenuProps) {
+  const theme = useTheme()
   return (
     <>
       <Card
@@ -23,6 +25,7 @@ export default function FoodInMenu({ foodInMenu }: FoodInMenuProps) {
           m: 0.5,
           width: 300,
           minHeight: 275,
+          bgcolor: theme.palette.background.paper,
           // maxHeight: 550,
         }}
       >
@@ -45,14 +48,14 @@ export default function FoodInMenu({ foodInMenu }: FoodInMenuProps) {
             {foodInMenu.description}
             <br />
           </Typography>
-          <Typography variant="body2">
-            {foodInMenu.cost}
+          <Typography variant="h5" align="right">
+            {foodInMenu.cost + ' $'}
             <br />
           </Typography>
         </CardContent>
-        <CardActions>
+        {/* <CardActions>
           <Button size="small">Learn More</Button>
-        </CardActions>
+        </CardActions> */}
       </Card>
     </>
   )

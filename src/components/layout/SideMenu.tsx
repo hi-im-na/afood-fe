@@ -1,8 +1,10 @@
 import {
   Equalizer,
   MenuBook,
+  People,
   PostAdd,
   ReceiptLong,
+  RequestQuote,
   TableRestaurant,
 } from '@mui/icons-material'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
@@ -48,13 +50,23 @@ const closedMixin = (theme: Theme): CSSObject => ({
   },
 })
 
-const menuRouteList = ['income', 'menu', 'table', 'order', 'addOrder']
+const menuRouteList = [
+  'income',
+  'menu',
+  'table',
+  'order',
+  'addOrder',
+  'staff',
+  'salary',
+]
 const menuListTranslations = [
   'Income',
   'Menus',
   'Tables',
   'Orders',
   'Add order',
+  'Staffs',
+  'Salary Management',
 ]
 const menuListIcons = [
   <Equalizer />,
@@ -62,9 +74,28 @@ const menuListIcons = [
   <TableRestaurant />,
   <ReceiptLong />,
   <PostAdd />,
+  <People />,
+  <RequestQuote />,
 ]
 
-const SideMenu = () => {
+const menuFilter = (role: string) => {
+  switch (role) {
+    case 'ROLE_ADMIN':
+      return [0, 1, 2, 3, 4, 5, 6]
+    case 'ROLE_MANAGER':
+      return [1, 2, 3, 4, 5]
+    case 'ROLE_STAFF':
+      return [1, 2, 4]
+    default:
+      return [1, 2]
+  }
+}
+
+interface SideMenuProps {
+  role: string
+}
+
+const SideMenu = ({ role }: SideMenuProps) => {
   const theme = useTheme()
   const [open, setOpen] = React.useState(false)
   const mobileCheck = useMediaQuery('(min-width: 600px)')
@@ -77,6 +108,16 @@ const SideMenu = () => {
     // text === 'Sign Out' ? signOut() : null
     setOpen(false)
   }
+
+  const roledmenuRouteList = menuFilter(role).map(
+    (index) => menuRouteList[index]
+  )
+  const roledmenuListTranslations = menuFilter(role).map(
+    (index) => menuListTranslations[index]
+  )
+  const roledmenuListIcons = menuFilter(role).map(
+    (index) => menuListIcons[index]
+  )
 
   return (
     <Drawer
@@ -111,9 +152,9 @@ const SideMenu = () => {
       <Divider />
       <Divider />
       <List>
-        {menuListTranslations.map((text, index) => (
+        {roledmenuListTranslations.map((text, index) => (
           <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-            <NextLink className={scss.link} href={`/${menuRouteList[index]}`}>
+            <NextLink className={scss.link} href={`/${roledmenuRouteList[index]}`}>
               <ListItemButton
                 onClick={() => handleListItemButtonClick(text)}
                 title={text}
@@ -131,7 +172,7 @@ const SideMenu = () => {
                     justifyContent: 'center',
                   }}
                 >
-                  {menuListIcons[index]}
+                  {roledmenuListIcons[index]}
                 </ListItemIcon>
                 <ListItemText
                   primary={text}

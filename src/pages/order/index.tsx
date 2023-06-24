@@ -19,6 +19,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
@@ -51,6 +52,7 @@ const statusIcon = (status: string) => {
 }
 
 export default function OrderPage() {
+  const theme = useTheme()
   const { data: session } = useSession()
   const [selectedRowIds, setSelectedRowIds] = useState([])
   const [statusSelection, setStatusSelection] = useState('')
@@ -183,7 +185,7 @@ export default function OrderPage() {
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <InputLabel id="order-status">Status</InputLabel>
             <Select
-              sx={{ bgcolor: 'white' }}
+              sx={{ bgcolor: theme.palette.background.paper }}
               labelId="order-status"
               id="order-status-select"
               value={statusSelection}
@@ -224,7 +226,7 @@ export default function OrderPage() {
           <InputLabel id="orderId" />
           &nbsp;
           <TextField
-            sx={{ bgcolor: 'white', width: '20%' }}
+            sx={{ bgcolor: theme.palette.background.paper, width: '20%' }}
             label="orderId"
             id="order-id"
             value={orderId}
@@ -244,7 +246,7 @@ export default function OrderPage() {
       <Box display="flex">
         <Box sx={{ width: '60%', pr: 1 }}>
           <DataGrid
-            sx={{ bgcolor: 'white' }}
+            sx={{ bgcolor: theme.palette.background.paper }}
             rows={rows}
             columns={columns}
             style={{ height: 600 }}
@@ -264,7 +266,7 @@ export default function OrderPage() {
         </Box>
         <Box sx={{ width: '40%', pl: 1 }}>
           <DataGrid
-            sx={{ bgcolor: 'white' }}
+            sx={{ bgcolor: theme.palette.background.paper }}
             rows={foodsInOrder}
             columns={columns2}
             style={{ height: 600 }}

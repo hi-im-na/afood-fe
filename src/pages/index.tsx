@@ -28,21 +28,30 @@ export default function Home() {
             sx={{
               marginBottom: 4,
               color: '#ff5722',
+              textShadow: '0px 0px 10px rgba(0,0,0,0.5)',
             }}
           >
             Welcome to AFood Restaurant!
           </Typography>
-          <Typography variant="h5" align="center" sx={{ marginBottom: 2 }}>
+          <Typography
+            variant="h5"
+            align="center"
+            sx={{ marginBottom: 2, color: 'white' }}
+          >
             Experience a delightful culinary journey.
           </Typography>
-          <Typography variant="body1" align="center" sx={{ marginBottom: 4 }}>
+          <Typography
+            variant="body1"
+            align="center"
+            sx={{ marginBottom: 4, color: 'white' }}
+          >
             Indulge in our carefully crafted dishes made from fresh, locally
             sourced ingredients.
           </Typography>
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Button
               variant="contained"
-              color="primary"
+              color="secondary"
               size="large"
               href="/menu"
             >

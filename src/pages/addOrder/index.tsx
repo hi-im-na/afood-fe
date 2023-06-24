@@ -10,6 +10,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid'
 import { GetServerSideProps } from 'next'
 import { useSession } from 'next-auth/react'
@@ -39,13 +40,14 @@ let row2paramId: number
 let addedFoodsPrices: FoodPrice = {}
 // let totalOrderPrice: number = 0
 export default function AddOrderPage({ foods }: AddOrderPageProps) {
+  const theme = useTheme()
   const { data: session } = useSession()
   const [addedFoods, setAddedFoods] = useState<IFood[]>([])
   const [foodsQuantity, setFoodsQuantity] = useState<FoodsQuantity>({})
   const [totalOrderPrice, setTotalOrderPrice] = useState(0)
   const [isSnackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarColor, setSnackbarColor] = useState('')
-  
+
   //form data
   const [tableId, setTableId] = useState('')
   const [staffId, setStaffId] = useState('')
@@ -172,7 +174,7 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
     <>
       <Box sx={{ width: '55%', pr: 1 }}>
         <DataGrid
-          sx={{ bgcolor: 'white' }}
+          sx={{ bgcolor: theme.palette.background.paper }}
           rows={rows}
           columns={columns}
           style={{ height: 600 }}
@@ -186,7 +188,7 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
     <>
       <Box sx={{ width: '45%', pl: 1 }}>
         <DataGrid
-          sx={{ bgcolor: 'white' }}
+          sx={{ bgcolor: theme.palette.background.paper }}
           rows={addedFoods}
           columns={columns2}
           style={{ height: 600 }}
@@ -274,7 +276,7 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
           </Typography>
           <InputLabel id="staffId" />
           <TextField
-            sx={{ bgcolor: 'white', width: '20%' }}
+            sx={{ bgcolor: theme.palette.background.paper, width: '20%' }}
             label="staffId"
             id="staff-id"
             value={staffId}
@@ -283,7 +285,7 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
 
           <InputLabel id="tableId" />
           <TextField
-            sx={{ bgcolor: 'white', width: '20%' }}
+            sx={{ bgcolor: theme.palette.background.paper, width: '20%' }}
             label="tableId"
             id="table-id"
             value={tableId}

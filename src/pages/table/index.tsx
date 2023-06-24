@@ -1,9 +1,11 @@
-import { Box, Typography } from '@mui/material';
-import { GetServerSideProps } from 'next';
-import useSWR from 'swr';
 import TablesInArea from '@/components/tables/TablesInArea';
 import { ITableArea, ITableRestaurant } from '@/models/models';
 import { fetchTableAreas, fetchTables } from '@/services/publicApi';
+import { Box, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { GetServerSideProps } from 'next';
+import useSWR from 'swr';
+
 
 interface TablePageProps {
   tableAreas: ITableArea[];
@@ -16,6 +18,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
 };
 
 export default function TablePage({ tableAreas }: TablePageProps) {
+  const theme = useTheme();
+
   const { data: tables, error } = useSWR('fetchTables',() => fetchTables());
 
   if (!tables) return <div>Loading tables...</div>;
@@ -23,7 +27,7 @@ export default function TablePage({ tableAreas }: TablePageProps) {
 
   return (
     <Box p={4}>
-      <Typography variant="h2" align="center" sx={{ mb: 4, fontWeight: 'bold', color: '#333' }}>
+      <Typography variant="h2" align="center" sx={{ mb: 4, fontWeight: 'bold', color: theme.palette.text.primary}}>
         All Table Areas
       </Typography>
 
@@ -33,7 +37,7 @@ export default function TablePage({ tableAreas }: TablePageProps) {
         );
 
         return (
-          <Box key={tableArea.id} mb={4} boxShadow={2} p={3} >
+          <Box key={tableArea.id} mb={4} boxShadow={2} p={3} sx={{backgroundColor: theme.palette.background.default}}>
             <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 2 }}>
               {tableArea.areaName}
             </Typography>

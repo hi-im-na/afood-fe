@@ -7,6 +7,7 @@ import {
   CardContent,
   Typography,
 } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import { useRouter } from 'next/router'
 
 interface MenuProps {
@@ -14,6 +15,7 @@ interface MenuProps {
 }
 
 export default function Menu({ menu }: MenuProps) {
+  const theme = useTheme()
   const router = useRouter()
   const seeMenu = () => {
     router.push(`/menu/${menu.id}`)
@@ -21,7 +23,13 @@ export default function Menu({ menu }: MenuProps) {
 
   return (
     <>
-      <Card sx={{ minWidth: 275, maxWidth: 275 }}>
+      <Card
+        sx={{
+          minWidth: 275,
+          maxWidth: 275,
+          bgcolor: theme.palette.background.paper,
+        }}
+      >
         <CardContent>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
             Menu's name

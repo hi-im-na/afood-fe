@@ -13,6 +13,7 @@ export default function Menus({ menus }: MenuProps) {
         sx={{
           display: 'flex',
           flexWrap: 'wrap',
+          justifyContent: 'center',
         }}
       >
         {menus.map((menu) => (

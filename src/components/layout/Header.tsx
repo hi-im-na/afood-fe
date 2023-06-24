@@ -93,7 +93,11 @@ const Header = (props: HeaderProps) => {
               <ThemeToggleButton ColorModeContext={ColorModeContext} />
             </Box>
             {!session ? (
-              <Button variant="contained" color="info" onClick={() => signIn()}>
+              <Button
+                variant="contained"
+                color="inherit"
+                onClick={() => signIn()}
+              >
                 Sign in
               </Button>
             ) : (
@@ -131,7 +135,7 @@ const Header = (props: HeaderProps) => {
                   </MenuItem>
                 </Menu>
                 <Typography component="span">
-                  {session?.user?.username}
+                  {' ' + session?.user?.username}
                 </Typography>
               </Box>
             )}
@@ -140,7 +144,7 @@ const Header = (props: HeaderProps) => {
       </AppBar>
       <Box
         position="static"
-        sx={{ height: mobileCheck ? 64 : 57, pb: '40px' }}
+        sx={{ height: mobileCheck ? 64 : 57, mb: '40px' }}
       />
     </>
   )
