@@ -18,9 +18,15 @@ import {
   SelectChangeEvent,
   TextField,
   Typography,
+  useMediaQuery,
 } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid'
+import {
+  DataGrid,
+  GridColDef,
+  GridRowsProp,
+  GridToolbar,
+} from '@mui/x-data-grid'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import useSWR, { mutate } from 'swr'
@@ -59,6 +65,8 @@ export default function OrderPage() {
   const [orderId, setOrderId] = useState('')
   const [foodsInOrder, setFoodsInOrder] = useState<IFood[]>([])
   const [foodsQuantity, setFoodsQuantity] = useState<FoodsQuantity>({})
+  const tabletCheck = useMediaQuery('(min-width: 1025px)')
+  const mobileCheck = useMediaQuery('(min-width: 600px)')
 
   const handleStatusChange = (event: SelectChangeEvent) => {
     setStatusSelection(event.target.value)
@@ -89,19 +97,20 @@ export default function OrderPage() {
     }) || []
 
   const columns: GridColDef[] = [
-    { field: 'id', headerName: 'id', width: 80 },
-    { field: 'orderInTime', headerName: 'In Time', width: 130 },
-    { field: 'orderOutTime', headerName: 'Out Time', width: 130 },
-    { field: 'tableSittingId', headerName: 'Table', width: 50 },
-    { field: 'staffId', headerName: 'Staff Id', width: 70 },
-    { field: 'totalCost', headerName: 'Total Cost', width: 100 },
+    { field: 'id', headerName: 'id', flex: 1, sortable: false },
+    { field: 'orderInTime', headerName: 'In Time', flex: 4 },
+    { field: 'orderOutTime', headerName: 'Out Time', flex: 4 },
+    { field: 'tableSittingId', headerName: 'Table', flex: 2, sortable: false },
+    { field: 'staffId', headerName: 'Staff Id', flex: 2, sortable: false },
+    { field: 'totalCost', headerName: 'Total', flex: 2, sortable: false },
     {
       field: 'orderStatus',
-      headerName: 'orderStatus',
-      width: 150,
+      headerName: 'Status',
+      flex: 3,
+      sortable: false,
       renderCell: (params) => (
         <Chip
-          label={params.row.orderStatus}
+          label={tabletCheck ? params.row.orderStatus : ''}
           icon={statusIcon(params.row.orderStatus)}
           color={statusColor(params.row.orderStatus)}
           variant="outlined"
@@ -112,12 +121,12 @@ export default function OrderPage() {
 
   const rows2: GridRowsProp = foodsInOrder || []
   const columns2: GridColDef[] = [
-    { field: 'id', headerName: 'id', width: 100 },
-    { field: 'name', headerName: 'name', width: 200 },
+    { field: 'id', headerName: 'id', flex: 1, sortable: false },
+    { field: 'name', headerName: 'name', flex: 2, sortable: false },
     {
       field: 'quantity',
       headerName: 'Quantity',
-      width: 75,
+      flex: 1,
       sortable: false,
       renderCell: (params) => {
         return <Typography>{foodsQuantity[params.row.id]}</Typography>
@@ -126,13 +135,43 @@ export default function OrderPage() {
   ]
 
   //handle
-  const handleSelectionModelChange = (newSelectionModel: any) => {
+  const handleSelectionModelChange = async (newSelectionModel: any) => {
     setSelectedRowIds(newSelectionModel)
 
     const selectedRows = newSelectionModel.map((rowId: any) =>
       rows.find((row) => row.id === rowId)
     )
     const selectedRowIds = selectedRows.map((row: any) => row.id)
+
+    //handle on select row
+    let lastIdSelected: number = selectedRowIds[selectedRowIds.length - 1]
+    if (!lastIdSelected) return
+    let res = await fetchFoodsByOrderId(
+      lastIdSelected.toString(),
+      session!.user.token
+    )
+    let orderFoodRes = await fetchOrderFoodByOrderId(
+      lastIdSelected.toString(),
+      session!.user.token
+    )
+    if (res && orderFoodRes) {
+      setFoodsInOrder(res)
+      let orderFoodQuantities = orderFoodRes.map(
+        (orderFood) => orderFood.quantity
+      )
+      let orderFoodIds = orderFoodRes.map((orderFood) => orderFood.foodId)
+
+      const result: { [key: string]: number } = orderFoodIds.reduce(
+        (acc, orderFoodId, index) => {
+          acc[orderFoodId] = orderFoodQuantities[index]
+          return acc
+        },
+        {} as { [key: string]: number }
+      )
+      setFoodsQuantity(result)
+    } else {
+      setFoodsInOrder([])
+    }
   }
   const handleStatusChangeSubmit = async (event: any) => {
     event.preventDefault()
@@ -147,7 +186,7 @@ export default function OrderPage() {
   }
 
   async function handleConfirmOrderShow(e: any) {
-    e.preventDefault()
+    // e.preventDefault()
     // fetch order info
     let res = await fetchFoodsByOrderId(orderId, session!.user.token)
     let orderFoodRes = await fetchOrderFoodByOrderId(
@@ -214,16 +253,16 @@ export default function OrderPage() {
   return (
     <>
       <Box display="flex" sx={{ m: 2 }}>
-        <Box sx={{ width: '60%' , pl: 1}}>
+        <Box sx={{ width: '65%', pl: 1 }}>
           <Typography variant="h3" component="h1">
             Manage order table
           </Typography>
         </Box>
-        <Box sx={{ width: '40%' , pr: 1}} display="flex" alignItems="center">
-          <Typography variant="body1" component="h5">
-            Choose the order you want to see:
+        <Box sx={{ width: '35%', pr: 1 }} display="flex" alignItems="center">
+          <Typography variant="h5" component="h5">
+            Order ID: {selectedRowIds[selectedRowIds.length - 1]}
           </Typography>
-          <InputLabel id="orderId" />
+          {/* <InputLabel id="orderId" />
           &nbsp;
           <TextField
             sx={{ bgcolor: theme.palette.background.paper, width: '20%' }}
@@ -240,11 +279,11 @@ export default function OrderPage() {
             onClick={(e: any) => handleConfirmOrderShow(e)}
           >
             Submit
-          </Button>
+          </Button> */}
         </Box>
       </Box>
       <Box display="flex">
-        <Box sx={{ width: '60%', pr: 1 }}>
+        <Box sx={{ width: '65%', pr: 1 }}>
           <DataGrid
             sx={{ bgcolor: theme.palette.background.paper }}
             rows={rows}
@@ -253,6 +292,7 @@ export default function OrderPage() {
             checkboxSelection
             rowSelectionModel={selectedRowIds}
             onRowSelectionModelChange={handleSelectionModelChange}
+            disableColumnMenu
             initialState={{
               sorting: {
                 sortModel: [{ field: 'id', sort: 'desc' }],
@@ -264,17 +304,16 @@ export default function OrderPage() {
           />
           {ordersTable}
         </Box>
-        <Box sx={{ width: '40%', pl: 1 }}>
+        <Box sx={{ width: '35%', pl: 1 }}>
           <DataGrid
             sx={{ bgcolor: theme.palette.background.paper }}
             rows={foodsInOrder}
             columns={columns2}
             style={{ height: 600 }}
-            initialState={{
-              sorting: {
-                sortModel: [{ field: 'id', sort: 'asc' }],
-              },
-            }}
+            disableColumnMenu
+            disableColumnSelector
+            disableDensitySelector
+            slots={{ toolbar: GridToolbar }}
           />
         </Box>
       </Box>

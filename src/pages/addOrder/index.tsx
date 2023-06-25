@@ -1,17 +1,24 @@
 import { IFood, IOrder } from '@/models/models'
 import { addFoodToOrder, addOrder } from '@/services/managerApi'
 import { fetchFoods } from '@/services/publicApi'
+import { Add, Remove } from '@mui/icons-material'
 import {
   Alert,
   Box,
   Button,
+  IconButton,
   InputLabel,
   Snackbar,
   TextField,
   Typography,
 } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid'
+import {
+  DataGrid,
+  GridColDef,
+  GridRowsProp,
+  GridToolbar,
+} from '@mui/x-data-grid'
 import { GetServerSideProps } from 'next'
 import { useSession } from 'next-auth/react'
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
@@ -50,7 +57,7 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
 
   //form data
   const [tableId, setTableId] = useState('')
-  const [staffId, setStaffId] = useState('')
+  // const [staffId, setStaffId] = useState('')
 
   useEffect(() => {
     // total order price
@@ -83,13 +90,14 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
   const rows: GridRowsProp = foods || []
 
   const columns: GridColDef[] = [
-    { field: 'id', headerName: 'Id', width: 50 },
-    { field: 'name', headerName: 'Name', width: 400 },
-    { field: 'cost', headerName: 'Cost ($)', width: 150 },
+    { field: 'id', headerName: 'Id', flex: 1 },
+    { field: 'name', headerName: 'Name', flex: 2, sortable: false },
+    { field: 'cost', headerName: 'Cost ($)', flex: 1, sortable: false },
     {
       field: 'Add to order',
       headerName: 'Add to order',
       sortable: false,
+      flex: 1,
       renderCell: (params) => {
         const onClick = (e: any) => {
           e.stopPropagation() // don't select this row after clicking
@@ -103,20 +111,20 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
           setAddedFoods([...addedFoods, currentRow])
           setFoodsQuantity({ ...foodsQuantity, [currentRow.id]: 1 })
         }
-        return <Button onClick={onClick}>Add to order</Button>
+        return <Button onClick={onClick}>Add</Button>
       },
     },
   ]
 
   // order info table definitions
   const columns2: GridColDef[] = [
-    { field: 'id', headerName: 'Id', width: 10 },
-    { field: 'name', headerName: 'Name', width: 200 },
-    { field: 'cost', headerName: 'Cost ($)', width: 100 },
+    { field: 'id', headerName: 'Id', flex: 2 },
+    { field: 'name', headerName: 'Name', flex: 4 , sortable: false,},
+    { field: 'cost', headerName: 'Cost ($)', flex: 2 , sortable: false,},
     {
       field: 'quantity',
       headerName: 'Quantity',
-      width: 75,
+      flex: 2,
       sortable: false,
       renderCell: (params) => {
         let foodQuantity = foodsQuantity[params.row.id]
@@ -127,7 +135,7 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
     {
       field: '-',
       headerName: '-',
-      width: 70,
+      flex: 1,
       sortable: false,
       renderCell: (params) => {
         const onClick = (e: any) => {
@@ -140,13 +148,18 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
             [params.row.id]: foodQuantity - 1,
           })
         }
-        return <Button onClick={onClick}>Remove</Button>
+        return (
+          <IconButton onClick={onClick} size='small'>
+            <Remove fontSize='small'/>
+          </IconButton>
+        )
+        // <Button onClick={onClick}>Remove</Button>
       },
     },
     {
       field: '+',
       headerName: '+',
-      width: 70,
+      flex: 1,
       sortable: false,
       renderCell: (params) => {
         const onClick = (e: any) => {
@@ -163,7 +176,12 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
             [params.row.id]: newQuantity,
           })
         }
-        return <Button onClick={onClick}>Add</Button>
+        return (
+          <IconButton onClick={onClick} size='small'>
+            <Add fontSize='small' />
+          </IconButton>
+        )
+        // <Button onClick={onClick}>Add</Button>
       },
     },
   ]
@@ -179,6 +197,16 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
           columns={columns}
           style={{ height: 600 }}
           disableRowSelectionOnClick
+          disableColumnMenu
+          disableColumnSelector
+          disableDensitySelector
+          slots={{ toolbar: GridToolbar }}
+          slotProps={{
+            toolbar: {
+              showQuickFilter: true,
+              quickFilterProps: { debounceMs: 200 },
+            },
+          }}
         />
       </Box>
     </>
@@ -193,6 +221,7 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
           columns={columns2}
           style={{ height: 600 }}
           disableRowSelectionOnClick
+          disableColumnMenu
         />
       </Box>
     </>
@@ -206,7 +235,7 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
     try {
       //add new order
       let newOrder: IOrder = await addOrder(
-        staffId,
+        session!.user.id.toString(),
         tableId,
         totalOrderPrice.toString(),
         session!.user.token
@@ -234,10 +263,10 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
       setSnackbarColor('error')
     }
   }
-  const handleOnStaffIdChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log('staffId', e.target.value)
-    setStaffId(e.target.value)
-  }
+  // const handleOnStaffIdChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   console.log('staffId', e.target.value)
+  //   setStaffId(e.target.value)
+  // }
   const handleOnTableIdChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTableId(e.target.value)
   }
@@ -272,16 +301,16 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
           alignItems="center"
         >
           <Typography variant="h6" component="span">
-            Confirm add new order:
+            Confirm add new order to table:
           </Typography>
-          <InputLabel id="staffId" />
+          {/* <InputLabel id="staffId" />
           <TextField
             sx={{ bgcolor: theme.palette.background.paper, width: '20%' }}
             label="staffId"
             id="staff-id"
             value={staffId}
             onChange={handleOnStaffIdChange}
-          />
+          /> */}
 
           <InputLabel id="tableId" />
           <TextField

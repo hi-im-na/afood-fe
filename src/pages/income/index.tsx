@@ -8,10 +8,12 @@ import {
   getTotalCostAllOrder,
 } from '@/services/managerApi'
 import { Container, Grid } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import { useSession } from 'next-auth/react'
 import useSWR from 'swr'
 
 export default function IncomePage() {
+  const theme = useTheme()
   const { data: session } = useSession()
   const { data: countOrders, error: e1 } = useSWR(
     session ? 'countOrders' : null,
@@ -32,7 +34,7 @@ export default function IncomePage() {
   if (e1 || e2 || e3 || e4) return <div>failed to load</div>
   if (!countOrders || !totalValue || !avgOrderValue || !conversionRate)
     return <div>loading...</div>
-    
+
   return (
     <Container>
       <Grid container gap={4} marginTop={2}>
@@ -44,7 +46,8 @@ export default function IncomePage() {
         />
         <TransactionsPerDay />
       </Grid>
-      <TransactionBottomRow />
+      {/* <TransactionBottomRow /> */}
+      
     </Container>
   )
 }
