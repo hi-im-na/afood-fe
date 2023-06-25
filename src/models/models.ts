@@ -59,4 +59,20 @@ export interface IStaff {
   fullName: string
   phoneNumber: string
   cityzenId: string
+  salary: number
+}
+
+export interface IStaffCreate {
+  username: string
+  password: string
+  fullName: string
+  phoneNumber: string
+  citizenId: string
+}
+
+export interface INgayCong {
+  id: number
+  timeWorked: number
+  workedDate: Date
+  staffId: number
 }
