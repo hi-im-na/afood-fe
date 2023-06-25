@@ -65,7 +65,7 @@ const menuListTranslations = [
   'Tables',
   'Orders',
   'Add order',
-  'Staffs',
+  'Staffs management',
   'Salary Management',
 ]
 const menuListIcons = [

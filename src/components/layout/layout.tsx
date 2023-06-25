@@ -18,6 +18,7 @@ export default function Layout({ children }: Props) {
           left: 0,
           overflow: 'hidden',
           zIndex: -999,
+          opacity: 0.8,
         }}
       >
         <Image
