@@ -7,9 +7,11 @@ import darkTheme from '@/theme/darkTheme'
 import lightTheme from '@/theme/lightTheme'
 import { CssBaseline } from '@mui/material'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import 'dayjs/locale/vi'
 import type { AppProps } from 'next/app'
 import { createContext, useMemo, useState } from 'react'
-
 const ColorModeContext = createContext({
   toggleColorMode: () => {},
 })
@@ -46,15 +48,17 @@ export default function App({ Component, pageProps }: AppProps) {
         <ThemeProvider
           theme={mode === 'dark' ? darkThemeChosen : lightThemeChosen}
         >
-          <AuthProvider>
-            <DrawerProvider>
-              <CssBaseline />
-              <Header ColorModeContext={ColorModeContext} />
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            </DrawerProvider>
-          </AuthProvider>
+          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="vi">
+            <AuthProvider>
+              <DrawerProvider>
+                <CssBaseline />
+                <Header ColorModeContext={ColorModeContext} />
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </DrawerProvider>
+            </AuthProvider>
+          </LocalizationProvider>
         </ThemeProvider>
       </ColorModeContext.Provider>
     </>

@@ -1,4 +1,5 @@
 export default function formatDate(date: Date): string {
+  if (!date) return ''
   const options: Intl.DateTimeFormatOptions = {
     hour: '2-digit',
     minute: '2-digit',
