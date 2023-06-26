@@ -58,13 +58,14 @@ export interface IStaff {
   role: string
   fullName: string
   phoneNumber: string
-  cityzenId: string
+  citizenId: string
   salary: number
 }
 
 export interface IStaffCreate {
   username: string
   password: string
+  role: string
   fullName: string
   phoneNumber: string
   citizenId: string

@@ -2,6 +2,7 @@ import { IStaffCreate } from './../models/models'
 import { IStaff } from '@/models/models'
 import axios from 'axios'
 import { API_URL_ADMIN } from './api'
+import convertFieldsToString from '@/utils/convertFieldsToString'
 
 export const getAllStaffs = async (token: string) => {
   const res = await axios
@@ -51,6 +52,22 @@ export const deleteStaffByUsername = async (
     .delete<IStaff>(`${API_URL_ADMIN}/staffs/deleteByUsername/${username}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
+    .catch((err) => {
+      console.log(err)
+      throw err
+    })
+  return res.data
+}
+
+export const updateStaff = async (token: string, staff: IStaff) => {
+  const res = await axios
+    .put<IStaff>(
+      `${API_URL_ADMIN}/staffs/update`,
+      new URLSearchParams(convertFieldsToString({ ...staff })),
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    )
     .catch((err) => {
       console.log(err)
       throw err
