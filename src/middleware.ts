@@ -17,7 +17,9 @@ export default withAuth(
     }
     if (
       (nextUrl.pathname.match('/staffs') ||
-        nextUrl.pathname.match('/salary')) &&
+        nextUrl.pathname.match('/salary') ||
+        nextUrl.pathname.match('/income') ||
+        nextUrl.pathname.match('/timekeeping')) &&
       nextauth.token?.role !== 'ROLE_ADMIN'
     )
       return NextResponse.redirect(new URL('/403', req.url))
@@ -35,6 +37,7 @@ export const config = {
     '/order:path*',
     '/addOrder:path*',
     '/staffs:path*',
+    '/timekeeping:path*',
     '/salary:path*',
   ],
 }

@@ -1,4 +1,5 @@
 import {
+  EditCalendar,
   Equalizer,
   MenuBook,
   People,
@@ -57,6 +58,7 @@ const menuRouteList = [
   'order',
   'addOrder',
   'staff',
+  'timekeeping',
   'salary',
 ]
 const menuListTranslations = [
@@ -66,6 +68,7 @@ const menuListTranslations = [
   'Orders',
   'Add order',
   'Staffs management',
+  'Timekeeping',
   'Salary Management',
 ]
 const menuListIcons = [
@@ -75,13 +78,14 @@ const menuListIcons = [
   <ReceiptLong />,
   <PostAdd />,
   <People />,
+  <EditCalendar/>,
   <RequestQuote />,
 ]
 
 const menuFilter = (role: string) => {
   switch (role) {
     case 'ROLE_ADMIN':
-      return [0, 1, 2, 3, 4, 5, 6]
+      return [0, 1, 2, 3, 4, 5, 6, 7]
     case 'ROLE_MANAGER':
       return [1, 2, 3, 4, 5]
     case 'ROLE_STAFF':
