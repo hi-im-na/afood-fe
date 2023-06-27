@@ -35,6 +35,7 @@ export default function Layout({ children }: Props) {
         className={scss.layout}
         style={{
           padding: session ? '0 24px 0 80px' : 0,
+          height: 'calc(100vh - 104px)',
         }}
       >
         {session && <SideMenu role={session.user.role} />}

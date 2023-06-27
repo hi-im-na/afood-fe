@@ -27,6 +27,7 @@ import {
   Theme,
   useMediaQuery,
 } from '@mui/material'
+import { headerHeight } from '@/utils/globalVariables'
 
 const drawerWidth = 240
 
@@ -133,7 +134,7 @@ const SideMenu = ({ role }: SideMenuProps) => {
         width: drawerWidth,
         [`& .MuiDrawer-paper`]: {
           left: 0,
-          top: mobileCheck ? 64 : 57,
+          top: headerHeight,
           flexShrink: 0,
           whiteSpace: 'nowrap',
           boxSizing: 'border-box',

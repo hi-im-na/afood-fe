@@ -1,4 +1,5 @@
 import ThemeToggleButton from '@/components/ThemeToggleButton/ThemeToggleButton'
+import { headerHeight } from '@/utils/globalVariables'
 import { AccountCircle, ExitToApp, Restaurant } from '@mui/icons-material'
 import { useMediaQuery } from '@mui/material'
 import AppBar from '@mui/material/AppBar'
@@ -144,7 +145,7 @@ const Header = (props: HeaderProps) => {
       </AppBar>
       <Box
         position="static"
-        sx={{ height: mobileCheck ? 64 : 57, mb: '40px' }}
+        sx={{ height: headerHeight, mb: '40px' }}
       />
     </>
   )
