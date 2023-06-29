@@ -23,6 +23,7 @@
     "@types/react": "18.2.8",
     "@types/react-dom": "18.2.4",
     "axios": "^1.4.0",
+    "bignumber.js": "^9.1.1",
     "chart.js": "^4.3.0",
     "dayjs": "^1.11.8",
     "eslint": "8.42.0",
@@ -39,6 +40,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.45.0",
     "react-hook-form-mui": "^6.3.1",
+    "react-swipeable-views": "^0.14.0",
     "sass": "^1.63.5",
     "swr": "^2.1.5",
     "typescript": "5.1.3"
