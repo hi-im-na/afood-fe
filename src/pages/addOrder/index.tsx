@@ -18,6 +18,7 @@ import {
   GridColDef,
   GridRowsProp,
   GridToolbar,
+  GridToolbarContainer,
 } from '@mui/x-data-grid'
 import { GetServerSideProps } from 'next'
 import { useSession } from 'next-auth/react'
@@ -119,8 +120,8 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
   // order info table definitions
   const columns2: GridColDef[] = [
     { field: 'id', headerName: 'Id', flex: 2 },
-    { field: 'name', headerName: 'Name', flex: 4 , sortable: false,},
-    { field: 'cost', headerName: 'Cost ($)', flex: 2 , sortable: false,},
+    { field: 'name', headerName: 'Name', flex: 4, sortable: false },
+    { field: 'cost', headerName: 'Cost ($)', flex: 2, sortable: false },
     {
       field: 'quantity',
       headerName: 'Quantity',
@@ -149,8 +150,8 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
           })
         }
         return (
-          <IconButton onClick={onClick} size='small'>
-            <Remove fontSize='small'/>
+          <IconButton onClick={onClick} size="small">
+            <Remove fontSize="small" />
           </IconButton>
         )
         // <Button onClick={onClick}>Remove</Button>
@@ -177,8 +178,8 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
           })
         }
         return (
-          <IconButton onClick={onClick} size='small'>
-            <Add fontSize='small' />
+          <IconButton onClick={onClick} size="small">
+            <Add fontSize="small" />
           </IconButton>
         )
         // <Button onClick={onClick}>Add</Button>
@@ -222,6 +223,7 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
           style={{ height: 600 }}
           disableRowSelectionOnClick
           disableColumnMenu
+          slots={{ toolbar: CustomToolbar }}
         />
       </Box>
     </>
@@ -273,6 +275,24 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false)
+  }
+
+  function CustomToolbar() {
+    return (
+      <GridToolbarContainer>
+        <CleanToolbar />
+      </GridToolbarContainer>
+    )
+  }
+  const CleanToolbar = () => {
+    const cleanTable = () => {
+      setAddedFoods([])
+    }
+    return (
+      <>
+        <Button onClick={cleanTable}>clean</Button>
+      </>
+    )
   }
 
   return (
