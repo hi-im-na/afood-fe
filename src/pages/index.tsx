@@ -1,4 +1,5 @@
-import { Box, Button, Container, Typography } from '@mui/material'
+import { MenuBook, TableRestaurant } from '@mui/icons-material'
+import { Box, Button, Grid, Typography } from '@mui/material'
 import { Inter } from 'next/font/google'
 import Head from 'next/head'
 
@@ -21,44 +22,64 @@ export default function Home() {
           alignItems: 'center',
         }}
       >
-        <Container maxWidth="sm">
-          <Typography
-            variant="h2"
-            align="center"
-            sx={{
-              marginBottom: 4,
-              color: '#ff5722',
-              textShadow: '0px 0px 10px rgba(0,0,0,0.5)',
-            }}
-          >
-            Welcome to AFood Restaurant!
-          </Typography>
-          <Typography
-            variant="h5"
-            align="center"
-            sx={{ marginBottom: 2, color: 'white' }}
-          >
-            Experience a delightful culinary journey.
-          </Typography>
-          <Typography
-            variant="body1"
-            align="center"
-            sx={{ marginBottom: 4, color: 'white' }}
-          >
-            Indulge in our carefully crafted dishes made from fresh, locally
-            sourced ingredients.
-          </Typography>
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Button
-              variant="contained"
-              color="secondary"
-              size="large"
-              href="/menu"
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <Box
+              component="div"
+              sx={{ height: 'calc((100vh - 104px)/3)' }}
+            ></Box>
+          </Grid>
+          <Grid item xs={6}></Grid>
+          <Grid item xs={6}>
+            <Typography
+              variant="h2"
+              // align="center"
+              sx={{
+                marginBottom: 4,
+                color: '#ff5722',
+                textShadow: '0px 0px 10px rgba(0,0,0,0.5)',
+                fontWeight: 'bold',
+              }}
             >
-              View Menu
-            </Button>
-          </Box>
-        </Container>
+              Welcome to AFood Restaurant!
+            </Typography>
+            <Typography
+              variant="h5"
+              // align="center"
+              sx={{ marginBottom: 2 }}
+            >
+              Experience a delightful culinary journey.
+            </Typography>
+            <Typography
+              variant="body1"
+              // align="center"
+              sx={{ marginBottom: 4 }}
+            >
+              Indulge in our carefully crafted dishes made from fresh, locally
+              sourced ingredients.
+            </Typography>
+            <Box sx={{}}>
+              <Button
+                variant="contained"
+                color="secondary"
+                size="large"
+                href="/menu"
+                startIcon={<MenuBook />}
+              >
+                View Menu
+              </Button>{' '}
+              <Button
+                variant="contained"
+                color="secondary"
+                size="large"
+                href="/table"
+                startIcon={<TableRestaurant />}
+              >
+                View Tables
+              </Button>
+            </Box>
+          </Grid>
+        </Grid>
       </Box>
     </>
   )
