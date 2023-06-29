@@ -12,6 +12,9 @@ const lightTheme: ThemeOptions = {
     background: {
       default: '#fff3e0',
     },
+    text: {
+      primary: '#333333', // Dark shade of gray
+    },
   },
 };
 

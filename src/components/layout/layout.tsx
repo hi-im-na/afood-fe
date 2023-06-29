@@ -1,10 +1,9 @@
 import { Props } from '@/utils/interfaces'
+import { Box } from '@mui/material'
 import { useSession } from 'next-auth/react'
+import Image from 'next/image'
 import scss from './Layout.module.scss'
 import SideMenu from './SideMenu'
-import { Box } from '@mui/material'
-import Image from 'next/image'
-
 export default function Layout({ children }: Props) {
   const { data: session } = useSession()
   return (

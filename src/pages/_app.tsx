@@ -16,7 +16,7 @@ const ColorModeContext = createContext({
   toggleColorMode: () => {},
 })
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps, ...appProps }: AppProps) {
   const [mode, setMode] = useState<'light' | 'dark'>('light')
   const colorMode = useMemo(
     () => ({
@@ -41,6 +41,9 @@ export default function App({ Component, pageProps }: AppProps) {
       }),
     [mode]
   )
+
+  if ([`/billPrint`].includes(appProps.router.pathname))
+    return <Component {...pageProps} />
 
   return (
     <>
