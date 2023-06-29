@@ -135,7 +135,18 @@ export const updateStaffSalaryById = async (
   return res.data
 }
 
-export const getNgayCong = async (token: string, staffId: string) => {
+export const getAllNgayCong = async (token: string) => {
+  const res = await axios
+    .get(`${API_URL_ADMIN}/ngaycong`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .catch((err) => {
+      throw err
+    })
+  return res.data
+}
+
+export const getNgayCongByStaffId = async (token: string, staffId: string) => {
   const res = await axios
     .get(`${API_URL_ADMIN}/ngaycong/${staffId}`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -179,5 +190,31 @@ export const deleteNgayCong = async (token: string, id: number) => {
     .catch((err) => {
       throw err
     })
+  return res.data
+}
+
+export const getTotalHoursWorkedAllTime = async (
+  token: string,
+  staffId: string
+) => {
+  const res = await axios
+    .get(`${API_URL_ADMIN}/ngaycong/totalHoursWorkedAllTime/${staffId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .catch((err) => {
+      throw err
+    })
+  return res.data
+}
+
+export const getTotalHoursWorkedAllTimeOfAllStaff = async (token: string) => {
+  const res = await axios
+    .get(`${API_URL_ADMIN}/ngaycong/totalHoursWorkedAllTimeOfAllStaff`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .catch((err) => {
+      throw err
+    })
+  console.log(res.data)
   return res.data
 }

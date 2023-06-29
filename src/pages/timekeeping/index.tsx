@@ -3,7 +3,7 @@ import {
   createNgayCong,
   deleteNgayCong,
   getAllStaffs,
-  getNgayCong,
+  getNgayCongByStaffId,
   updateStaffSalaryById,
 } from '@/services/adminApi'
 import {
@@ -158,7 +158,7 @@ export default function TimekeepingPage() {
   const handleTimekeepingClick = (row: GridRowProps) => async () => {
     console.log('timekeeping', row)
     try {
-      const res = await getNgayCong(session!.user.token, row.id!)
+      const res = await getNgayCongByStaffId(session!.user.token, row.id!)
       console.log('ngay cong', res)
       setNgayCong(res)
     } catch (e: any) {

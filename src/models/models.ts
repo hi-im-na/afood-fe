@@ -43,6 +43,7 @@ export interface IOrder {
   tableSittingId: number
   staffId: number
   orderStatus: string
+  totalCost: number
 }
 
 export interface IOrderFood {
