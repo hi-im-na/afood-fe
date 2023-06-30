@@ -1,12 +1,12 @@
 import {
   EditCalendar,
+  Elderly,
   Equalizer,
   MenuBook,
   People,
   PostAdd,
   ReceiptLong,
-  RequestQuote,
-  TableRestaurant,
+  TableRestaurant
 } from '@mui/icons-material'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
@@ -16,6 +16,7 @@ import NextLink from 'next/link'
 import * as React from 'react'
 import scss from './SideMenu.module.scss'
 
+import { headerHeight } from '@/utils/globalVariables'
 import {
   Divider,
   Drawer,
@@ -27,7 +28,6 @@ import {
   Theme,
   useMediaQuery,
 } from '@mui/material'
-import { headerHeight } from '@/utils/globalVariables'
 
 const drawerWidth = 240
 
@@ -60,7 +60,7 @@ const menuRouteList = [
   'addOrder',
   'staff',
   'timekeeping',
-  'salary',
+  'seniority',
 ]
 const menuListTranslations = [
   'Income',
@@ -70,7 +70,7 @@ const menuListTranslations = [
   'Add order',
   'Staffs management',
   'Timekeeping',
-  'Salary Management',
+  "Staff's seniority",
 ]
 const menuListIcons = [
   <Equalizer />,
@@ -79,8 +79,8 @@ const menuListIcons = [
   <ReceiptLong />,
   <PostAdd />,
   <People />,
-  <EditCalendar/>,
-  <RequestQuote />,
+  <EditCalendar />,
+  <Elderly />,
 ]
 
 const menuFilter = (role: string) => {
@@ -159,7 +159,10 @@ const SideMenu = ({ role }: SideMenuProps) => {
       <List>
         {roledmenuListTranslations.map((text, index) => (
           <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-            <NextLink className={scss.link} href={`/${roledmenuRouteList[index]}`}>
+            <NextLink
+              className={scss.link}
+              href={`/${roledmenuRouteList[index]}`}
+            >
               <ListItemButton
                 onClick={() => handleListItemButtonClick(text)}
                 title={text}
