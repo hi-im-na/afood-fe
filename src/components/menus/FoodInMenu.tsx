@@ -1,14 +1,9 @@
 'use client'
 import { IFood } from '@/models/models'
 import capitalizeFirstLetter from '@/utils/capitalizeFirstLetter'
-import {
-  Box,
-  Card,
-  CardContent,
-  Typography
-} from '@mui/material'
+import { Box, Card, CardContent, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import Image from 'mui-image'
+import Image from 'next/image'
 
 interface FoodInMenuProps {
   foodInMenu: IFood
@@ -22,39 +17,52 @@ export default function FoodInMenu({ foodInMenu }: FoodInMenuProps) {
         <Card
           sx={{
             m: '1em',
-            width: '25em',
-            height: '42em',
+            width: '20em',
+            height: '38em',
             bgcolor: theme.palette.background.paper,
-            // maxHeight: "45em",
+            position: 'relative',
           }}
         >
           <CardContent>
-            <Typography variant="h5" component="div" sx={{ lineHeight: 1 }}>
+            <Typography
+              variant="overline"
+              sx={{ lineHeight: '1em', textAlign: 'center' }}
+            >
               <h2>{capitalizeFirstLetter(foodInMenu.name)}</h2>
             </Typography>
             <Box>
               <Image
                 src={'/images/' + foodInMenu.name + '.webp'}
-                showLoading
                 height={350}
-                width="100%"
+                width={350}
+                style={{ width: '100%', maxHeight: '23em', objectFit: 'cover' }}
+                alt={foodInMenu.name}
+                loading="lazy"
               />
             </Box>
-            <Typography
-              sx={{ my: 1.5 }}
-              color="text.secondary"
-              fontWeight="bold"
-            >
-              Description
-            </Typography>
-            <Typography variant="body2">
-              {foodInMenu.description}
-              <br />
-            </Typography>
-            <Typography variant="h5" align="right">
-              {foodInMenu.cost + ' $'}
-              <br />
-            </Typography>
+            <Box sx={{
+              height: '10em',
+            }}>
+              <Typography
+                sx={{ my: 1.5 }}
+                color="text.secondary"
+                fontWeight="bold"
+              >
+                Description
+              </Typography>
+              <Typography variant="body2">
+                {foodInMenu.description}
+                <br />
+              </Typography>
+              <Typography variant="h5" sx={{
+                position: 'absolute',
+                bottom: '1em',
+                right: '1em',
+              }}>
+                {foodInMenu.cost + ' $'}
+                <br />
+              </Typography>
+            </Box>
           </CardContent>
         </Card>
       </Box>
