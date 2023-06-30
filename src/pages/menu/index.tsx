@@ -1,11 +1,23 @@
 import { IFood, IMenu } from '@/models/models'
-import { fetchFoods, fetchFoodsByMenuId, fetchMenus } from '@/services/publicApi'
+import {
+  fetchFoods,
+  fetchFoodsByMenuId,
+  fetchMenus,
+} from '@/services/publicApi'
 import FoodInMenu from '@/components/menus/FoodInMenu'
 import { Box, Tab, Tabs, Typography } from '@mui/material'
 import { tabsClasses } from '@mui/material/Tabs'
 import { GetServerSideProps } from 'next'
-import { useState } from 'react'
-import { BrunchDining, Icecream, KebabDining, LocalBar, LocalDining, LocalPizza } from '@mui/icons-material'
+import { Fragment, useState } from 'react'
+import {
+  BrunchDining,
+  Icecream,
+  KebabDining,
+  LocalBar,
+  LocalDining,
+  LocalPizza,
+} from '@mui/icons-material'
+import PageTitle from '@/components/PageTitle/PageTitle'
 
 interface MenuProps {
   menus: IMenu[]
@@ -44,9 +56,7 @@ const MenuPage = ({ menus, foods, foodsInMenus }: MenuProps) => {
 
   return (
     <Box>
-      <Typography variant="h3" textAlign="center" sx={{ pb: 4 }} color={'primary'}>
-        Menu
-      </Typography>
+      <PageTitle title="Menu" />
       <Box
         sx={{
           flexGrow: 1,
@@ -66,7 +76,7 @@ const MenuPage = ({ menus, foods, foodsInMenus }: MenuProps) => {
               '&.Mui-disabled': { opacity: 0.3 },
             },
           }}
-          indicatorColor='secondary'
+          indicatorColor="secondary"
         >
           <Tab label="All food" icon={<LocalDining />} />
           {menus.map((menu) => (
@@ -98,11 +108,7 @@ const MenuPage = ({ menus, foods, foodsInMenus }: MenuProps) => {
           }}
         >
           {foodsInMenus[index].map((food) => {
-            return (
-              <>
-                <FoodInMenu foodInMenu={food} key={food.id} />
-              </>
-            )
+            return <FoodInMenu foodInMenu={food} key={food.id} />
           })}
         </Box>
       ))}

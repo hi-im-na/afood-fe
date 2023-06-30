@@ -1,3 +1,4 @@
+import PageTitle from '@/components/PageTitle/PageTitle'
 import { IStaff, IStaffCreate } from '@/models/models'
 import {
   createStaff,
@@ -230,9 +231,7 @@ export default function StaffPage() {
 
   return (
     <>
-      <Typography variant="h3" textAlign="center">
-        Staffs Management
-      </Typography>
+      <PageTitle title="Staffs Management" />
       <Box>
         <DataGrid
           rows={staffs!}

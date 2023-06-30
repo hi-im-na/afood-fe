@@ -1,3 +1,4 @@
+import PageTitle from '@/components/PageTitle/PageTitle';
 import TablesInArea from '@/components/tables/TablesInArea';
 import { ITableArea, ITableRestaurant } from '@/models/models';
 import { fetchTableAreas, fetchTables } from '@/services/publicApi';
@@ -27,9 +28,7 @@ export default function TablePage({ tableAreas }: TablePageProps) {
 
   return (
     <Box p={4}>
-      <Typography variant="h2" align="center" sx={{ mb: 4, fontWeight: 'bold', color: theme.palette.text.primary}}>
-        All Table Areas
-      </Typography>
+      <PageTitle  title="Tables" />
 
       {tableAreas.map((tableArea) => {
         const tablesInArea = tables.filter(

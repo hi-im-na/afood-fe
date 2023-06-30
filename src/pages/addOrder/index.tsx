@@ -23,6 +23,7 @@ import {
 import { GetServerSideProps } from 'next'
 import { useSession } from 'next-auth/react'
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
+import BigNumber from 'bignumber.js'
 
 interface AddOrderPageProps {
   foods: IFood[]
@@ -36,7 +37,7 @@ interface FoodsQuantity {
 }
 
 interface FoodPrice {
-  [key: number]: number
+  [key: number]: BigNumber
 }
 let foodsInMenus
 export const getServerSideProps: GetServerSideProps = async () => {
@@ -52,7 +53,7 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
   const { data: session } = useSession()
   const [addedFoods, setAddedFoods] = useState<IFood[]>([])
   const [foodsQuantity, setFoodsQuantity] = useState<FoodsQuantity>({})
-  const [totalOrderPrice, setTotalOrderPrice] = useState(0)
+  const [totalOrderPrice, setTotalOrderPrice] = useState('0')
   const [isSnackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarColor, setSnackbarColor] = useState('')
 
@@ -63,10 +64,17 @@ export default function AddOrderPage({ foods }: AddOrderPageProps) {
   useEffect(() => {
     // total order price
     addedFoodsPrices = {
-      ...addedFoods.map((food) => food.cost * foodsQuantity[food.id]),
+      ...addedFoods.map((food) =>
+        new BigNumber(food.cost).times(foodsQuantity[food.id])
+      ),
     }
     setTotalOrderPrice(
-      Object.values(addedFoodsPrices).reduce((a, b) => a + b, 0)
+      new BigNumber(
+        Object.values(addedFoodsPrices).reduce(
+          (a: BigNumber, b: BigNumber) => a.plus(b),
+          BigNumber(0)
+        )
+      ).toString()
     )
 
     //if foodsQuantity is empty, reset addedFoods
