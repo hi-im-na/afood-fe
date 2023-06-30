@@ -1,16 +1,14 @@
+import PageTitle from '@/components/PageTitle/PageTitle'
 import { INgayCong, IStaff } from '@/models/models'
 import {
   createNgayCong,
   deleteNgayCong,
+  getAllNgayCong,
   getAllStaffs,
   getNgayCongByStaffId,
   updateStaffSalaryById,
 } from '@/services/adminApi'
-import {
-  Add,
-  EditCalendar,
-  Remove
-} from '@mui/icons-material'
+import { Add, EditCalendar, Remove } from '@mui/icons-material'
 import {
   Box,
   Button,
@@ -38,10 +36,11 @@ import {
   GridToolbar,
 } from '@mui/x-data-grid'
 import { DatePicker } from '@mui/x-date-pickers'
+import BigNumber from 'bignumber.js'
 import dayjs, { Dayjs } from 'dayjs'
 import { useSession } from 'next-auth/react'
 import { useEffect, useRef, useState } from 'react'
-import useSWR from 'swr'
+import useSWR, { mutate } from 'swr'
 
 export default function TimekeepingPage() {
   const { data: session } = useSession()
@@ -49,8 +48,11 @@ export default function TimekeepingPage() {
     session ? 'staffs' : null,
     () => getAllStaffs(session!.user.token)
   )
-  //   const {data: ngayCongs, error: e2} = useSWR<INgayCong[]>(session ? 'ngayCong' : null, () => getNgayCongs(session!.user.token))
-  const [ngayCong, setNgayCong] = useState<INgayCong[]>([])
+  const { data: listAllNgayCong, error: e2 } = useSWR<INgayCong[]>(
+    session ? 'listAllNgayCong' : null,
+    () => getAllNgayCong(session!.user.token)
+  )
+  const [listNgayCong, setListNgayCong] = useState<INgayCong[]>([])
   const [open, setOpen] = useState(false)
   const [openAddTimekeeping, setOpenAddTimekeeping] = useState(false)
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({})
@@ -63,13 +65,9 @@ export default function TimekeepingPage() {
   const descriptionElementRef = useRef<HTMLElement>(null)
   const descriptionElementRef2 = useRef<HTMLElement>(null)
 
-  useEffect(() => {
+  useEffect(() => {}, [listNgayCong])
 
-  }, [ngayCong])
-
-  useEffect(() => {
-    
-  }, [dateVal])
+  useEffect(() => {}, [dateVal])
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -77,7 +75,7 @@ export default function TimekeepingPage() {
   }
   const handleClose = () => {
     setOpen(false)
-    setNgayCong([])
+    setListNgayCong([])
   }
 
   const handleAddTimekeepingClickOpen = () => {
@@ -98,8 +96,9 @@ export default function TimekeepingPage() {
         dateVal!.toDate(),
         timeVal
       )
-      setNgayCong([...ngayCong, res])
+      setListNgayCong([...listNgayCong, res])
       setOpenAddTimekeeping(false)
+      mutate('listAllNgayCong')
     } catch (e: any) {
       alert(e.response.data)
       console.log(e)
@@ -115,6 +114,46 @@ export default function TimekeepingPage() {
     }
   }, [open])
 
+  if (staffs === undefined) return <div>Loading...</div>
+  if (listAllNgayCong === undefined) return <div>Loading...</div>
+  // --------------- bắt đầu tính toán sau khi đã có dữ liệu ----------------
+
+  /**
+   * tính toán số ngày làm việc của mỗi nhân viên trong tháng hiện tại
+   * và gán vào myRows: (IStaff & { totalDaysWorked: number })[]
+   */
+  const myRows = staffs.map((staff) => {
+    const uniqueDaysWorked = [
+      ...new Set(
+        listAllNgayCong
+          .filter((ngayCong) => ngayCong.staffId === staff.id)
+          .flatMap((ngayCong) => ngayCong.workedDate)
+          .filter((date) => new Date(date).getMonth() === new Date().getMonth()) // Filter by current month
+      ),
+    ]
+
+    const totalHoursInMonth = listAllNgayCong.reduce((total, ngayCong) => {
+      if (
+        ngayCong.staffId === staff.id &&
+        new Date(ngayCong.workedDate).getMonth() === new Date().getMonth()
+      ) {
+        return total + ngayCong.timeWorked
+      }
+      return total
+    }, 0)
+
+    const totalSalaryInMonth = BigNumber(totalHoursInMonth)
+      .times(staff.salary)
+      .toNumber()
+
+    return {
+      ...staff,
+      totalDaysWorkedInMonth: uniqueDaysWorked.length,
+      totalHoursInMonth: totalHoursInMonth,
+      totalSalaryInMonth: totalSalaryInMonth,
+    }
+  })
+
   const handleRowEditStop: GridEventListener<'rowEditStop'> = (
     params,
     event
@@ -124,6 +163,11 @@ export default function TimekeepingPage() {
     }
   }
 
+  /**
+   * Chả biêt để làm cái đéo gì, có lẽ không cần thiết
+   * @param newRow
+   * @returns
+   */
   const processRowUpdate = async (newRow: GridRowModel) => {
     const updatedRow = { ...newRow }
     console.log('row', updatedRow)
@@ -160,7 +204,7 @@ export default function TimekeepingPage() {
     try {
       const res = await getNgayCongByStaffId(session!.user.token, row.id!)
       console.log('ngay cong', res)
-      setNgayCong(res)
+      setListNgayCong(res)
     } catch (e: any) {
       // alert(e.response.data)
       console.log(e)
@@ -177,7 +221,7 @@ export default function TimekeepingPage() {
     console.log('remove')
     try {
       const res = await deleteNgayCong(session!.user.token, id)
-      setNgayCong([...ngayCong.filter((item) => item.id !== id)])
+      setListNgayCong([...listNgayCong.filter((item) => item.id !== id)])
       console.log('res ', res)
     } catch (e: any) {
       alert(e.response.data)
@@ -197,52 +241,28 @@ export default function TimekeepingPage() {
         return params.row.role.slice(5)
       },
     },
-    // { field: 'salary', headerName: 'Salary($)/hour', editable: true, flex: 1 },
-    // {
-    //   field: 'actions',
-    //   type: 'actions',
-    //   headerName: 'Actions',
-    //   cellClassName: 'actions',
-    //   flex: 1,
-    //   getActions: ({ id }) => {
-    //     const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit
-
-    //     if (isInEditMode) {
-    //       return [
-    //         <GridActionsCellItem
-    //           icon={<Save />}
-    //           label="Save"
-    //           sx={{
-    //             color: 'primary.main',
-    //           }}
-    //           onClick={handleSaveClick(id)}
-    //         />,
-    //         <GridActionsCellItem
-    //           icon={<Cancel />}
-    //           label="Cancel"
-    //           className="textPrimary"
-    //           onClick={handleCancelClick(id)}
-    //           color="inherit"
-    //         />,
-    //       ]
-    //     }
-
-    //     return [
-    //       <GridActionsCellItem
-    //         icon={<Edit />}
-    //         label="Edit"
-    //         className="textPrimary"
-    //         onClick={handleEditClick(id)}
-    //         color="inherit"
-    //       />,
-    //     ]
-    //   },
-    // },
+    {
+      field: 'totalSalaryInMonth',
+      headerName: 'Salary(month)',
+      flex: 1,
+      align: 'center',
+    },
+    {
+      field: 'totalHoursInMonth',
+      headerName: 'Hours (month)',
+      flex: 1,
+      align: 'center',
+    },
+    {
+      field: 'totalDaysWorkedInMonth',
+      headerName: 'Days worked (month)',
+      flex: 1.2,
+      align: 'center',
+    },
     {
       field: 'timekeeping',
       type: 'actions',
       headerName: 'timekeeping',
-      // width: 120,
       flex: 1,
       renderCell: (params) => {
         return (
@@ -259,16 +279,16 @@ export default function TimekeepingPage() {
     },
   ]
 
-  if (!staffs) return <div>loading...</div>
-  if (e1) return <div>failed to load staffs</div>
+  // if (!staffs) return <div>loading...</div>
+  // if (e1) return <div>failed to load staffs</div>
+  if (e1 || e2) return <div>Error</div>
+
   return (
     <>
       <Box>
-        <Typography variant="h3" textAlign="center">
-          Timekeeping
-        </Typography>
+        <PageTitle title="Timekeeping" />
         <DataGrid
-          rows={staffs}
+          rows={myRows}
           columns={columns}
           sx={{
             bgcolor: 'background.paper',
@@ -338,8 +358,8 @@ export default function TimekeepingPage() {
                 <Grid item xs={2} fontWeight={'bold'}>
                   Remove
                 </Grid>
-                {ngayCong.length > 0 ? (
-                  ngayCong.map((ngay) => {
+                {listNgayCong.length > 0 ? (
+                  listNgayCong.map((ngay) => {
                     return (
                       <>
                         <Grid item xs={1}>
