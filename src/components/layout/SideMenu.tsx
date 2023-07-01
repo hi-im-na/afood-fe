@@ -6,7 +6,8 @@ import {
   People,
   PostAdd,
   ReceiptLong,
-  TableRestaurant
+  RequestQuote,
+  TableRestaurant,
 } from '@mui/icons-material'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
@@ -61,6 +62,7 @@ const menuRouteList = [
   'staff',
   'timekeeping',
   'seniority',
+  'staffEarnings',
 ]
 const menuListTranslations = [
   'Income',
@@ -71,6 +73,7 @@ const menuListTranslations = [
   'Staffs management',
   'Timekeeping',
   "Staff's seniority",
+  "Staff's earnings",
 ]
 const menuListIcons = [
   <Equalizer />,
@@ -81,12 +84,13 @@ const menuListIcons = [
   <People />,
   <EditCalendar />,
   <Elderly />,
+  <RequestQuote />,
 ]
 
 const menuFilter = (role: string) => {
   switch (role) {
     case 'ROLE_ADMIN':
-      return [0, 1, 2, 3, 4, 5, 6, 7]
+      return [0, 1, 2, 3, 4, 5, 6, 7, 8]
     case 'ROLE_MANAGER':
       return [1, 2, 3, 4, 5]
     case 'ROLE_STAFF':

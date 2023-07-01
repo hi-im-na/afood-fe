@@ -26,6 +26,7 @@ export default withAuth(
     if (
       (nextUrl.pathname.match('/staffs') ||
         nextUrl.pathname.match('/seniority') ||
+        nextUrl.pathname.match('/staffEarnings') ||
         nextUrl.pathname.match('/income') ||
         nextUrl.pathname.match('/timekeeping')) &&
       nextauth.token?.role !== 'ROLE_ADMIN'

@@ -9,12 +9,14 @@ export default function PageTitle({ title }: PageProps) {
   const theme = useTheme()
   return (
     <>
-      <div style={{ display: 'flex', alignItems: 'center' , marginBottom: "2em"}}>
+      <div
+        style={{ display: 'flex', alignItems: 'center', marginBottom: '2em' }}
+      >
         <div
           style={{
             flex: 1,
             backgroundColor: theme.palette.secondary.main,
-            height: '3px',
+            height: '.2em',
           }}
         />
 
@@ -30,7 +32,7 @@ export default function PageTitle({ title }: PageProps) {
           style={{
             flex: 1,
             backgroundColor: theme.palette.secondary.main,
-            height: '3px',
+            height: '.2em',
           }}
         />
       </div>

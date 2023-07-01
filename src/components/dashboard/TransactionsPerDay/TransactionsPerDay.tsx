@@ -20,7 +20,20 @@ const TransactionsPerDay = () => {
       <Paper className={scss.transactions}>
         <div className={scss.chart}>
           <Typography>TransActions per day</Typography>
-          <DataChart type={'line'} data={lineChartData} />
+          <DataChart
+            type={'line'}
+            data={lineChartData}
+            // options={{
+            //   scales: {
+            //     y: {
+            //       ticks: { color: '#666', textStrokeColor: '#666' },
+            //     },
+            //     x: {
+            //       ticks: { color: theme.palette.text.secondary },
+            //     },
+            //   },
+            // }}
+          />
         </div>
         <div className={scss.cardWrapper}>
           <Card className={scss.card} variant={'outlined'}>
