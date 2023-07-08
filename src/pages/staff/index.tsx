@@ -197,6 +197,7 @@ export default function StaffPage() {
                 color: 'primary.main',
               }}
               onClick={handleSaveClick(id)}
+              key="save"
             />,
             <GridActionsCellItem
               icon={<Cancel />}
@@ -204,6 +205,7 @@ export default function StaffPage() {
               className="textPrimary"
               onClick={handleCancelClick(id)}
               color="inherit"
+              key="cancel"
             />,
           ]
         }
@@ -215,12 +217,14 @@ export default function StaffPage() {
             className="textPrimary"
             onClick={handleEditClick(id)}
             color="inherit"
+            key="edit"
           />,
           <GridActionsCellItem
             icon={<Delete />}
             label="Delete"
             onClick={handleDeleteClick(id)}
             color="inherit"
+            key="delete"
           />,
         ]
       },

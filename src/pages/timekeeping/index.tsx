@@ -339,7 +339,10 @@ export default function TimekeepingPage() {
             </Box>
           </Box>
 
-          <DialogContent dividers={true}>
+          <DialogContent
+            dividers={true}
+            style={{ height: '25em', maxHeight: '25em' }}
+          >
             <DialogContentText
               id="scroll-dialog-description"
               ref={descriptionElementRef}

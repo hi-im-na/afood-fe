@@ -14,7 +14,7 @@ export default function Custom404() {
       >
         <Typography variant="h1" color={"red"}>403 - Forbidden</Typography>
         <Typography variant="h4">
-          You don't have permission to access this page.
+          You don&#39;t have permission to access this page.
         </Typography>
       </Box>
     </>

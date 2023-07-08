@@ -32,7 +32,7 @@ export default function Menu({ menu }: MenuProps) {
       >
         <CardContent>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            Menu's name
+            Menu&#39;s name
           </Typography>
           <Typography variant="h5" component="div">
             <h2>{capitalizeFirstLetter(menu.name)}</h2>

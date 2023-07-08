@@ -18,6 +18,7 @@ import {
   LocalPizza,
 } from '@mui/icons-material'
 import PageTitle from '@/components/PageTitle/PageTitle'
+import { useSession } from 'next-auth/react'
 
 interface MenuProps {
   menus: IMenu[]
@@ -40,6 +41,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 }
 
 const MenuPage = ({ menus, foods, foodsInMenus }: MenuProps) => {
+  const { data: session } = useSession()
   const [value, setValue] = useState(0)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -47,11 +49,11 @@ const MenuPage = ({ menus, foods, foodsInMenus }: MenuProps) => {
   }
 
   const iconList = [
-    <KebabDining />,
-    <BrunchDining />,
-    <Icecream />,
-    <LocalBar />,
-    <LocalPizza />,
+    <KebabDining key="kebab" />,
+    <BrunchDining key="brunch" />,
+    <Icecream key="icecream" />,
+    <LocalBar key="localbar" />,
+    <LocalPizza key="localpizza" />,
   ]
 
   return (
@@ -84,6 +86,7 @@ const MenuPage = ({ menus, foods, foodsInMenus }: MenuProps) => {
           ))}
         </Tabs>
       </Box>
+
       <Box
         sx={{
           display: value === 0 ? 'flex' : 'none',

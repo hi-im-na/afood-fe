@@ -1,6 +1,6 @@
 import { Grid } from '@mui/material'
 import DataCard from '@/components/dashboard/DataCard/DataCard'
-import scss from './DataRibbon.module.scss'
+// import scss from './DataRibbon.module.scss'
 
 interface DataRibbonProps {
   countOrders: number
@@ -16,7 +16,14 @@ const DataRibbon = ({
   conversionRate,
 }: DataRibbonProps) => {
   return (
-    <Grid container gap={2} className={scss.dataRibbon}>
+    <Grid container gap={2} 
+    // className={scss.dataRibbon}
+    sx={{
+      display: "grid",
+      textAlign: "center",
+      gridTemplateColumns: "repeat(4, 1fr)",
+    }}
+    >
       <Grid>
         <DataCard
           title={'Total Sales'}

@@ -3,6 +3,7 @@ import { IFood } from '@/models/models'
 import capitalizeFirstLetter from '@/utils/capitalizeFirstLetter'
 import { Box, Card, CardContent, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 
 interface FoodInMenuProps {
@@ -10,14 +11,17 @@ interface FoodInMenuProps {
 }
 
 export default function FoodInMenu({ foodInMenu }: FoodInMenuProps) {
+  const { data: session } = useSession()
+
   const theme = useTheme()
+
   return (
     <>
       <Box>
         <Card
           sx={{
             m: '1em',
-            width: '20em',
+            width: session ? '19em' : '20em',
             height: '38em',
             bgcolor: theme.palette.background.paper,
             position: 'relative',
@@ -35,14 +39,20 @@ export default function FoodInMenu({ foodInMenu }: FoodInMenuProps) {
                 src={'/images/' + foodInMenu.name + '.webp'}
                 height={350}
                 width={350}
-                style={{ width: '100%', maxHeight: '23em', objectFit: 'cover' }}
+                style={{
+                  width: '100%',
+                  maxHeight: '23em',
+                  objectFit: 'cover',
+                }}
                 alt={foodInMenu.name}
                 loading="lazy"
               />
             </Box>
-            <Box sx={{
-              height: '10em',
-            }}>
+            <Box
+              sx={{
+                height: '10em',
+              }}
+            >
               <Typography
                 sx={{ my: 1.5 }}
                 color="text.secondary"
@@ -54,11 +64,14 @@ export default function FoodInMenu({ foodInMenu }: FoodInMenuProps) {
                 {foodInMenu.description}
                 <br />
               </Typography>
-              <Typography variant="h5" sx={{
-                position: 'absolute',
-                bottom: '1em',
-                right: '1em',
-              }}>
+              <Typography
+                variant="h5"
+                sx={{
+                  position: 'absolute',
+                  bottom: '1em',
+                  right: '1em',
+                }}
+              >
                 {foodInMenu.cost + ' $'}
                 <br />
               </Typography>
